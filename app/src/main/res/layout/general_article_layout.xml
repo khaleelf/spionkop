@@ -20,6 +20,7 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/margin_padding_size_medium"
                 android:layout_marginEnd="@dimen/margin_padding_size_medium"
+                app:cardElevation="0dp"
                 android:layout_marginBottom="@dimen/margin_padding_size_medium"
                 app:cardCornerRadius="4dp"
                 app:layout_constraintBottom_toBottomOf="parent"
