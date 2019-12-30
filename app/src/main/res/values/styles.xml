@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/primaryLightColor</item>
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="android:textColorSecondary">@color/secondaryTextColor</item>
-        <item name="android:fontFamily">@font/montserratmedium</item>
+        <item name="android:fontFamily">@font/plexsansmediumitalic</item>
         <item name="windowActionBar">false</item>
     </style>
 </resources>
