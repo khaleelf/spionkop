@@ -1,11 +1,9 @@
 package uk.co.khaleelfreeman.spion
 
-import android.content.Intent
 import android.net.Uri
 import android.view.ViewGroup
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import java.util.*

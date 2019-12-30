@@ -36,6 +36,10 @@ class MainActivity : AppCompatActivity() {
             adapter = viewAdapter
         }
         model.getArticles(ArticleRepository).observe(this, Observer<Array<Article>> { articles ->
+            if (articles.isNotEmpty()) {
+                viewAdapter.articles = emptyArray()
+                viewAdapter.notifyItemRangeRemoved(0, articles.size)
+            }
             loader.visibility = View.GONE
             recycler_view.visibility = View.VISIBLE
             viewAdapter.articles = articles
