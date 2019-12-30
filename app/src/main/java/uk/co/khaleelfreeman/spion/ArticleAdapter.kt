@@ -36,7 +36,7 @@ class ArticleAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val builder =  CustomTabsIntent.Builder()
-//        builder.setToolbarColor(getColor(holder.views.root.context, R.color.))
+        builder.setToolbarColor(getColor(holder.views.root.context, R.color.primaryColor))
         val customTabsIntent = builder.build()
         holder.views.title.text = articles[position].title
         val dateWords =

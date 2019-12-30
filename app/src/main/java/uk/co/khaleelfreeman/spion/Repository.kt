@@ -13,7 +13,7 @@ interface Repository {
     fun fetchArticles(callback: () -> Unit)
 }
 
-class ArticleRepository : Repository {
+object ArticleRepository : Repository {
     var published: Double = 0.0
         private set(value) {
             field = value
