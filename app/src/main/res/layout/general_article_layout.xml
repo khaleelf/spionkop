@@ -19,21 +19,22 @@
                 android:layout_width="72dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/margin_padding_size_medium"
-                android:layout_marginEnd="@dimen/margin_padding_size_medium"
                 app:cardElevation="0dp"
                 android:layout_marginBottom="@dimen/margin_padding_size_medium"
                 app:cardCornerRadius="4dp"
+                android:layout_marginLeft="@dimen/margin_padding_size_small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/general_article_title"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                    android:id="@+id/general_article_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                    <ImageView
+                        android:layout_gravity=""
+                        android:id="@+id/general_article_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
             </androidx.cardview.widget.CardView>
 
@@ -41,7 +42,6 @@
                 android:id="@+id/general_article_title"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginStart="@dimen/margin_padding_size_medium"
                 android:layout_marginTop="@dimen/margin_padding_size_medium"
                 android:textSize="@dimen/text_size_medium"
                 android:scrollHorizontally="true"

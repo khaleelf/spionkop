@@ -1,10 +1,17 @@
 package uk.co.khaleelfreeman.spion
 
+import android.content.Intent
+import android.net.Uri
 import android.view.ViewGroup
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import java.util.*
 
 class ArticleAdapter(
-    private val articles: Array<Article>,
+    var articles: Array<Article>,
     private val viewHolderFactory: ViewHolderFactory
 ) :
     RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
@@ -28,9 +35,18 @@ class ArticleAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val builder =  CustomTabsIntent.Builder()
+//        builder.setToolbarColor(getColor(holder.views.root.context, R.color.))
+        val customTabsIntent = builder.build()
         holder.views.title.text = articles[position].title
-        holder.views.date.text = articles[position].timeStamp
-        holder.views.image.setImageDrawable(holder.views.date.context.getDrawable(R.drawable.ic_launcher_foreground))
+        val dateWords =
+            Date(articles[position].timeStamp.toLong()).toString().split(" ", ignoreCase = true)
+        val date = "${dateWords[0]} ${dateWords[1]} ${dateWords[2]}"
+        holder.views.date.text = date
+        Glide.with(holder.views.root).load(articles[position].visual.url).into(holder.views.image)
+        holder.views.root.setOnClickListener {
+            customTabsIntent.launchUrl(holder.views.root.context, Uri.parse(articles[position].url))
+        }
     }
 
     override fun getItemCount() = articles.size
