@@ -12,7 +12,7 @@
         android:textColor="@color/primaryDarkColor"
         android:layout_marginStart="@dimen/margin_padding_size_medium"
         android:text="popular stories"
-        android:layout_marginBottom="@dimen/margin_padding_size_medium"/>
+        android:layout_marginBottom="@dimen/margin_padding_size_small"/>
 
     <include layout="@layout/featured_article_layout"/>
 </LinearLayout>

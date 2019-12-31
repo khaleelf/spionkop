@@ -10,8 +10,8 @@ android {
         applicationId "uk.co.khaleelfreeman.spion"
         minSdkVersion 22
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -44,4 +44,5 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation 'androidx.browser:browser:1.2.0'
     implementation 'com.airbnb.android:lottie:3.3.1'
+    implementation "com.google.android.material:material:1.0.0"
 }
