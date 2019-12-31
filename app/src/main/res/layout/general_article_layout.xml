@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="88dp"
     app:cardElevation="0dp"
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:layout_margin="@dimen/margin_padding_size_medium"
     app:cardCornerRadius="4dp"
     tools:layout_editor_absoluteX="1dp"
@@ -23,7 +26,7 @@
             app:cardCornerRadius="0dp"
             app:cardElevation="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintDimensionRatio="16:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/general_article_title"
             app:layout_constraintTop_toTopOf="parent">
@@ -42,9 +45,9 @@
             android:id="@+id/general_article_title"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/margin_padding_size_medium"
+            android:layout_marginTop="8dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="3"
             android:scrollHorizontally="true"
             android:textSize="@dimen/text_size_medium"
             app:layout_constraintBottom_toTopOf="@+id/general_article_time_stamp"
@@ -53,22 +56,21 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="steven gerrard to become liverpool manager" />
 
-            <TextView
-                android:id="@+id/general_article_time_stamp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_padding_size_medium"
-                android:textSize="@dimen/text_size_micro"
-                tools:text="17/08/2024"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/general_article_title"
-                app:layout_constraintTop_toBottomOf="@+id/general_article_title" />
+        <TextView
+            android:id="@+id/general_article_time_stamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_micro"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/general_article_title"
+            app:layout_constraintTop_toBottomOf="@+id/general_article_title"
+            tools:text="17/08/2024" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent=".75" />
+            app:layout_constraintGuide_percent="0.6" />
     </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
