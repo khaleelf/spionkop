@@ -7,6 +7,7 @@ import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import java.util.*
 
 interface Repository {
     fun getArticles(): Array<Article>
@@ -14,6 +15,9 @@ interface Repository {
 }
 
 object ArticleRepository : Repository {
+
+    private const val THIRTY_MIN_IN_MILLIS = 1.8e6
+
     var published: Double = 0.0
         private set(value) {
             field = value
@@ -26,6 +30,17 @@ object ArticleRepository : Repository {
     }
 
     override fun fetchArticles(callback: () -> Unit) {
+        if (currentTimeMinusPublished() > THIRTY_MIN_IN_MILLIS) {
+            executeNetworkRequest(callback)
+        } else {
+            callback()
+        }
+    }
+
+    private fun executeNetworkRequest(callback: () -> Unit) {
+
+        // TODO: Look at extracting out into a network service.
+
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://www.khaleelfreeman.co.uk/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -48,6 +63,8 @@ object ArticleRepository : Repository {
             }
         })
     }
+
+    private fun currentTimeMinusPublished() = Date().time.toDouble() - published
 }
 
 interface ArticlesService {
