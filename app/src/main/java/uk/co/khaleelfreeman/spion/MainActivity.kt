@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -51,14 +52,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         model.getArticles(ArticleRepository).observe(this, Observer<Array<Article>> { articles ->
-            if (articles.isNotEmpty()) {
-                viewAdapter.articles = emptyArray()
-                viewAdapter.notifyItemRangeRemoved(0, articles.size)
-            }
             loader.visibility = View.GONE
             recycler_view.visibility = View.VISIBLE
+
+            val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
             viewAdapter.articles = articles
-            viewAdapter.notifyItemRangeInserted(0,articles.size)
+            diffResult.dispatchUpdatesTo(viewAdapter)
         })
         super.onResume()
     }
@@ -66,4 +66,21 @@ class MainActivity : AppCompatActivity() {
     private fun showInfo() {
         startActivity(Intent(this, AppInfoActivity::class.java))
     }
+}
+
+
+class ArticleDiffUtilCallback(private val oldArticles: Array<Article>, private val newArticles: Array<Article>) : DiffUtil.Callback() {
+
+    override fun getOldListSize(): Int = oldArticles.size
+
+    override fun getNewListSize(): Int = newArticles.size
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldArticles[oldItemPosition] === newArticles[newItemPosition]
+    }
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        return oldArticles[oldItemPosition].url === newArticles[newItemPosition].url
+    }
+
 }
