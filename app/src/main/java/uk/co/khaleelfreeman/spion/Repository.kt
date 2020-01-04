@@ -2,12 +2,13 @@ package uk.co.khaleelfreeman.spion
 
 import android.util.Log
 import com.google.gson.annotations.SerializedName
+import org.joda.time.DateTime
+import org.joda.time.DateTimeZone
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import java.util.*
 
 interface Repository {
     fun getArticles(): Array<Article>
@@ -16,9 +17,9 @@ interface Repository {
 
 object ArticleRepository : Repository {
 
-    private const val THIRTY_MIN_IN_MILLIS = 1.8e6
+    private val THIRTY_MIN_IN_MILLIS = DateTime(1800000L)
 
-    var published: Double = 0.0
+    var published: Long = 0L
         private set(value) {
             field = value
         }
@@ -56,7 +57,7 @@ object ArticleRepository : Repository {
             }
 
             override fun onResponse(call: Call<Response>, response: retrofit2.Response<Response>) {
-                published = response.body()?.published ?: 0.0
+                published = response.body()?.published ?: 0L
                 articles = response.body()?.articles
                     ?: arrayOf(Article("Sorry there was an error fetching the articles", Visual()))
                 callback()
@@ -64,7 +65,7 @@ object ArticleRepository : Repository {
         })
     }
 
-    private fun currentTimeMinusPublished() = Date().time.toDouble() - published
+    private fun currentTimeMinusPublished() = DateTime().toDateTime(DateTimeZone.UTC).minus(published)
 }
 
 interface ArticlesService {
@@ -75,7 +76,7 @@ interface ArticlesService {
 
 data class Response(
     @SerializedName("feed_last_published")
-    val published: Double,
+    val published: Long,
     val articles: Array<Article>
 )
 
