@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.spion
+package uk.co.khaleelfreeman.spion.recyclerview
 
 import android.net.Uri
 import android.view.ViewGroup
@@ -6,6 +6,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import uk.co.khaleelfreeman.spion.*
 import java.util.*
 
 class ArticleAdapter(
@@ -73,7 +74,9 @@ class ArticleAdapter(
         position: Int
     ) {
         val builder = CustomTabsIntent.Builder()
-        builder.setToolbarColor(getColor(holder.views.root.context, R.color.primaryColor))
+        builder.setToolbarColor(getColor(holder.views.root.context,
+            R.color.primaryColor
+        ))
         val customTabsIntent = builder.build()
         holder.views.root.setOnClickListener {
             customTabsIntent.launchUrl(holder.views.root.context, Uri.parse(articles[position].url))
