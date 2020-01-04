@@ -14,6 +14,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolder
+import uk.co.khaleelfreeman.spion.repo.ArticleRepository
+import uk.co.khaleelfreeman.spion.service.Article
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        model.getArticles(ArticleRepository).observe(this, Observer<Array<Article>> { articles ->
+        model.getArticles(ArticleRepository()).observe(this, Observer<Array<Article>> { articles ->
             
             if(! Arrays.deepEquals(viewAdapter.articles, articles)) {
                 val loaderFadeAnim = ObjectAnimator.ofFloat(loader, "alpha", 1f, 0f).apply {

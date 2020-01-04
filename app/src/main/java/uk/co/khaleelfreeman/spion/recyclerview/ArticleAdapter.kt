@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import uk.co.khaleelfreeman.spion.*
+import uk.co.khaleelfreeman.spion.service.Article
 import java.util.*
 
 class ArticleAdapter(

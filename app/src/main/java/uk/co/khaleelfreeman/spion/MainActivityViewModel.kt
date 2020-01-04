@@ -3,6 +3,8 @@ package uk.co.khaleelfreeman.spion
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import uk.co.khaleelfreeman.spion.repo.Repository
+import uk.co.khaleelfreeman.spion.service.Article
 
 
 class MainActivityViewModel : ViewModel() {

@@ -15,6 +15,4 @@ class AppInfoActivity : AppCompatActivity() {
             finish()
         }
     }
-
-
 }
