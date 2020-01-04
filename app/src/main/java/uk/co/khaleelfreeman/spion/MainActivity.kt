@@ -1,5 +1,7 @@
 package uk.co.khaleelfreeman.spion
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -53,12 +55,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         model.getArticles(ArticleRepository).observe(this, Observer<Array<Article>> { articles ->
-
-
+            
             if(! Arrays.deepEquals(viewAdapter.articles, articles)) {
-                loader.visibility = View.GONE
-                recycler_view.visibility = View.VISIBLE
-
+                val loaderFadeAnim = ObjectAnimator.ofFloat(loader, "alpha", 1f, 0f).apply {
+                    duration = 1000
+                }
+                val recyclerFadeAnim = ObjectAnimator.ofFloat(recycler_view, "alpha", 0f, 1f).apply {
+                    duration = 1000
+                }
+                AnimatorSet().apply {
+                    play(loaderFadeAnim).before(recyclerFadeAnim)
+                    start()
+                }
                 val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
                 val diffResult = DiffUtil.calculateDiff(diffCallback)
                 viewAdapter.articles = articles
