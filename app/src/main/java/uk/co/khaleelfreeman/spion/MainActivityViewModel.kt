@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 
 class MainActivityViewModel : ViewModel() {
     private val articles by lazy { MutableLiveData<Array<Article>>() }
+
     fun getArticles(repository: Repository): LiveData<Array<Article>> {
         repository.fetchArticles {
             this.articles.value = repository.getArticles()

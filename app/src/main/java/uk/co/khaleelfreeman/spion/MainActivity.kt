@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,13 +53,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         model.getArticles(ArticleRepository).observe(this, Observer<Array<Article>> { articles ->
-            loader.visibility = View.GONE
-            recycler_view.visibility = View.VISIBLE
 
-            val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
-            val diffResult = DiffUtil.calculateDiff(diffCallback)
-            viewAdapter.articles = articles
-            diffResult.dispatchUpdatesTo(viewAdapter)
+
+            if(! Arrays.deepEquals(viewAdapter.articles, articles)) {
+                loader.visibility = View.GONE
+                recycler_view.visibility = View.VISIBLE
+
+                val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
+                val diffResult = DiffUtil.calculateDiff(diffCallback)
+                viewAdapter.articles = articles
+                diffResult.dispatchUpdatesTo(viewAdapter)
+            }
+
         })
         super.onResume()
     }
