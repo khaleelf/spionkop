@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:textSize="@dimen/text_size_small"
         android:textColor="@color/primaryDarkColor"
-        android:layout_marginStart="@dimen/margin_padding_size_medium"
         android:text="popular stories"
         android:layout_marginBottom="@dimen/margin_padding_size_small"/>
 

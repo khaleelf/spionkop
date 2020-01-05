@@ -48,6 +48,8 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginStart="@dimen/margin_padding_size_medium"
+        android:layout_marginEnd="@dimen/margin_padding_size_medium"
         android:alpha="0"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"

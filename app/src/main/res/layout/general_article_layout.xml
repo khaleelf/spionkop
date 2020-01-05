@@ -6,9 +6,9 @@
     android:layout_height="88dp"
     app:cardElevation="0dp"
     android:focusable="true"
+    android:layout_marginBottom="8dp"
     android:foreground="?android:attr/selectableItemBackground"
-    android:layout_margin="@dimen/margin_padding_size_medium"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="0dp"
     tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="224dp">
 
@@ -27,7 +27,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="16:9"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/general_article_title"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView

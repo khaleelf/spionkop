@@ -7,7 +7,6 @@
     app:cardCornerRadius="0dp"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    android:layout_margin="@dimen/margin_padding_size_medium"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
