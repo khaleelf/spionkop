@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
     private val model by lazy { ViewModelProviders.of(this)[MainActivityViewModel::class.java] }
     private var firstLaunch = true
+    private var sources = emptySet<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,15 +86,20 @@ class MainActivity : AppCompatActivity() {
         })
 
         model.sources.observe(this, Observer<Set<String>> { sources ->
-            sources.forEach { source ->
-                val chip = inflateMediaSources(source)
-                chip.setOnClickListener {
-                    if (chip.isChecked) {
-                        model.addFilter(source)
-                    } else {
-                        model.removeFilter(source)
+            if(this.sources.containsAll(sources)) {
+                // noop
+            } else {
+                sources.forEach { source ->
+                    val chip = inflateMediaSources(source)
+                    chip.setOnClickListener {
+                        if (chip.isChecked) {
+                            model.addFilter(source)
+                        } else {
+                            model.removeFilter(source)
+                        }
                     }
                 }
+                this.sources = sources
             }
         })
         super.onResume()
