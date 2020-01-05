@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
     private val model by lazy { ViewModelProviders.of(this)[MainActivityViewModel::class.java] }
-    private var mediaSourceSet = false
+    private var firstLaunch = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,34 +65,56 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        model.setRepository(ArticleRepository())
     }
 
     override fun onResume() {
-        model.getArticles(ArticleRepository()).observe(this, Observer<Array<Article>> { articles ->
+        model.fetchArticles()
+        model.articles.observe(this, Observer<Array<Article>> { articles ->
             
             if(! Arrays.deepEquals(viewAdapter.articles, articles)) {
-                val loaderFadeAnim = ObjectAnimator.ofFloat(loader, "alpha", 1f, 0f).apply {
-                    duration = 1000
-                }
-                val recyclerFadeAnim = ObjectAnimator.ofFloat(recycler_view, "alpha", 0f, 1f).apply {
-                    duration = 1000
-                }
-                AnimatorSet().apply {
-                    play(loaderFadeAnim).before(recyclerFadeAnim)
-                    start()
+                if (firstLaunch) {
+                    fadeOutLoader()
+                    firstLaunch = false
                 }
                 val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
                 val diffResult = DiffUtil.calculateDiff(diffCallback)
                 viewAdapter.articles = articles
                 diffResult.dispatchUpdatesTo(viewAdapter)
-
-                mediaSources(articles).forEach { inflateMediaSources(it) }
-
-
             }
+        })
 
+        model.sources.observe(this, Observer<Set<String>> { sources ->
+            sources.forEach { source ->
+                val chip = inflateMediaSources(source)
+                chip.setOnClickListener {
+                    if (chip.isChecked) {
+                        model.addFilter(source)
+                    } else {
+                        model.removeFilter(source)
+                    }
+                }
+            }
         })
         super.onResume()
+    }
+
+    private fun fadeOutLoader() {
+        val loaderFadeAnim = ObjectAnimator.ofFloat(loader, "alpha", 1f, 0f).apply {
+            duration = 1000
+        }
+        val recyclerFadeAnim = ObjectAnimator.ofFloat(recycler_view, "alpha", 0f, 1f).apply {
+            duration = 1000
+        }
+
+        val sourcesFadeAnim = ObjectAnimator.ofFloat(chip_container, "alpha", 0f, 1f).apply {
+            duration = 1000
+        }
+
+        AnimatorSet().apply {
+            play(loaderFadeAnim).before(recyclerFadeAnim).before(sourcesFadeAnim)
+            start()
+        }
     }
 
     private fun inflateMediaSources(source: String): Chip {
@@ -107,13 +129,4 @@ class MainActivity : AppCompatActivity() {
     private fun showInfo() {
         startActivity(Intent(this, AppInfoActivity::class.java))
     }
-}
-
-fun mediaSources(articles: Array<Article>): Set<String> {
-    return articles.map { it.url }.map {
-        val indexOfFirstSeparator = it.indexOf('.')
-        val subString = it.substring(indexOfFirstSeparator + 1, it.length)
-        val indexOfSecondSeparator = subString.indexOf('.')
-        it.substring(indexOfFirstSeparator + 1..indexOfFirstSeparator + indexOfSecondSeparator)
-    }.toSet()
 }

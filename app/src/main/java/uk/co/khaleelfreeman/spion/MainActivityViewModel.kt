@@ -8,12 +8,30 @@ import uk.co.khaleelfreeman.spion.service.Article
 
 
 class MainActivityViewModel : ViewModel() {
-    private val articles by lazy { MutableLiveData<Array<Article>>() }
+    private val _articles by lazy { MutableLiveData<Array<Article>>() }
+    val articles: LiveData<Array<Article>> = _articles
+    private val _sources by lazy { MutableLiveData<Set<String>>() }
+    val sources: LiveData<Set<String>> = _sources
+    private lateinit var repository: Repository
 
-    fun getArticles(repository: Repository): LiveData<Array<Article>> {
+    fun fetchArticles() {
         repository.fetchArticles {
-            this.articles.value = repository.getArticles()
+            this._articles.value = repository.getArticles()
+            _sources.value = repository.sources
         }
-        return articles
+    }
+
+    fun setRepository(repository: Repository) {
+        this.repository = repository
+    }
+
+    fun addFilter(source: String) {
+        repository.addFilter(source)
+        _articles.value = repository.getArticles()
+    }
+
+    fun removeFilter(source: String) {
+        repository.removeFilter(source)
+        _articles.value = repository.getArticles()
     }
 }
