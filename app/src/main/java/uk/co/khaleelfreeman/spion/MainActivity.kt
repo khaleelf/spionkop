@@ -4,6 +4,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_main.*
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
@@ -29,6 +31,7 @@ class MainActivity : AppCompatActivity() {
     }
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
     private val model by lazy { ViewModelProviders.of(this)[MainActivityViewModel::class.java] }
+    private var mediaSourceSet = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,13 +85,35 @@ class MainActivity : AppCompatActivity() {
                 val diffResult = DiffUtil.calculateDiff(diffCallback)
                 viewAdapter.articles = articles
                 diffResult.dispatchUpdatesTo(viewAdapter)
+
+                mediaSources(articles).forEach { inflateMediaSources(it) }
+
+
             }
 
         })
         super.onResume()
     }
 
+    private fun inflateMediaSources(source: String): Chip {
+        val chip: Chip =
+            LayoutInflater.from(this).inflate(R.layout.media_source_chip, null) as Chip
+        chip_container.addView(chip.apply {
+            text = "#$source"
+        })
+        return chip
+    }
+
     private fun showInfo() {
         startActivity(Intent(this, AppInfoActivity::class.java))
     }
+}
+
+fun mediaSources(articles: Array<Article>): Set<String> {
+    return articles.map { it.url }.map {
+        val indexOfFirstSeparator = it.indexOf('.')
+        val subString = it.substring(indexOfFirstSeparator + 1, it.length)
+        val indexOfSecondSeparator = subString.indexOf('.')
+        it.substring(indexOfFirstSeparator + 1..indexOfFirstSeparator + indexOfSecondSeparator)
+    }.toSet()
 }
