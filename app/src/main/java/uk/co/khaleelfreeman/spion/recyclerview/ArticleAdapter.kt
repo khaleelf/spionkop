@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import uk.co.khaleelfreeman.spion.*
+import uk.co.khaleelfreeman.spion.util.formatDate
 import uk.co.khaleelfreeman.spion.service.Article
-import java.util.*
 
 class ArticleAdapter(
     var articles: Array<Article>,
@@ -37,7 +37,7 @@ class ArticleAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         setViewClickListenerForCustomTabs(holder, position)
         setTitle(holder, position)
-        setDate(position, holder)
+        setDate(articles[position], holder)
         loadImage(holder, position)
     }
 
@@ -56,18 +56,11 @@ class ArticleAdapter(
     }
 
     private fun setDate(
-        position: Int,
+        article: Article,
         holder: ViewHolder
     ) {
-        val date = formatDate(position)
+        val date = formatDate(article)
         holder.views.date.text = date
-    }
-
-    // TODO: Move to a util class
-    private fun formatDate(position: Int): String {
-        val dateWords =
-            Date(articles[position].timeStamp.toLong()).toString().split(" ", ignoreCase = true)
-        return "${dateWords[0]} ${dateWords[1]} ${dateWords[2]}"
     }
 
     private fun setViewClickListenerForCustomTabs(
