@@ -17,7 +17,7 @@ class MainActivityViewModel : ViewModel() {
     fun fetchArticles() {
         repository.fetchArticles {
             this._articles.value = repository.getArticles()
-            _sources.value = repository.sources
+            _sources.value = repository.getSources()
         }
     }
 

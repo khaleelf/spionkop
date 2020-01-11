@@ -4,20 +4,21 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import uk.co.khaleelfreeman.spion.service.Article
 import uk.co.khaleelfreeman.spion.service.ArticleNetworkService
+import uk.co.khaleelfreeman.spion.service.NetworkService
 import uk.co.khaleelfreeman.spion.util.mediaSources
 
-class ArticleRepository(private val articleNetworkService: ArticleNetworkService = ArticleNetworkService()) :
+class ArticleRepository(private val articleNetworkService: NetworkService = ArticleNetworkService()) :
     Repository {
 
     private var articles: Array<Article> = emptyArray()
     private val THIRTY_MIN_IN_MILLIS = DateTime(1800000L)
-    override var sources: Set<String> = mutableSetOf()
-    override val articlefilters: MutableMap<String, Array<Article>> = mutableMapOf()
+    private var filteredArticles = emptyArray<Article>()
+    private lateinit var _sources: Set<String>
+    private val articlefilters: MutableMap<String, Array<Article>> = mutableMapOf()
     var published: Long = 0L
         private set(value) {
             field = value
         }
-    var filteredArticles = emptyArray<Article>()
 
     override fun getArticles(): Array<Article> {
         return if (filteredArticles.isEmpty()) {
@@ -32,9 +33,9 @@ class ArticleRepository(private val articleNetworkService: ArticleNetworkService
             articleNetworkService.execute { response ->
                 published = response.published
                 articles = response.articles
-                sources = mediaSources(response.articles)
+                _sources = mediaSources(response.articles)
                 //create seperate lists from each source
-                generateFilteredArticles(sources, articles)
+                generateFilteredArticles(_sources, articles)
                 callback()
             }
         } else {
@@ -60,6 +61,7 @@ class ArticleRepository(private val articleNetworkService: ArticleNetworkService
         filteredArticles = filteredArticles.filterNot { article -> articlefilters[source]!!.any { it == article } }.toTypedArray()
     }
 
+    override fun getSources(): Set<String> = _sources
 
     private fun currentTimeMinusPublished() = DateTime().toDateTime(DateTimeZone.UTC).minus(
         published
