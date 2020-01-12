@@ -16,8 +16,17 @@ class MainActivityViewModel : ViewModel() {
 
     fun fetchArticles() {
         repository.fetchArticles {
-            this._articles.value = repository.getArticles()
-            _sources.value = repository.getSources()
+            val repoArticles = repository.getArticles()
+            val repoSources = repository.getSources()
+            if (_articles.value == null) {
+                _articles.value = repoArticles
+                _sources.value = repoSources
+            } else {
+                if (!_articles.value!!.contentDeepEquals(repoArticles)){
+                    _articles.value = repoArticles
+                    _sources.value = repoSources
+                }
+            }
         }
     }
 

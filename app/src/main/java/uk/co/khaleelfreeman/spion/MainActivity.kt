@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
     private val model by lazy { ViewModelProviders.of(this)[MainActivityViewModel::class.java] }
     private var firstLaunch = true
-    private var sources = emptySet<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +71,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         model.fetchArticles()
         model.articles.observe(this, Observer<Array<Article>> { articles ->
-            
-            if(! Arrays.deepEquals(viewAdapter.articles, articles)) {
                 if (firstLaunch) {
                     fadeOutLoader()
                     firstLaunch = false
@@ -82,13 +79,9 @@ class MainActivity : AppCompatActivity() {
                 val diffResult = DiffUtil.calculateDiff(diffCallback)
                 viewAdapter.articles = articles
                 diffResult.dispatchUpdatesTo(viewAdapter)
-            }
         })
 
         model.sources.observe(this, Observer<Set<String>> { sources ->
-            if(this.sources.containsAll(sources)) {
-                // noop
-            } else {
                 sources.forEach { source ->
                     val chip = inflateMediaSources(source)
                     chip.setOnClickListener {
@@ -99,8 +92,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
-                this.sources = sources
-            }
         })
         super.onResume()
     }
