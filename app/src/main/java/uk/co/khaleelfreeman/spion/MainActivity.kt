@@ -93,16 +93,17 @@ class MainActivity : AppCompatActivity() {
         })
 
         model.sources.observe(this, Observer<Set<String>> { sources ->
-                sources.forEach { source ->
-                    val chip = inflateMediaSources(source)
-                    chip.setOnClickListener {
-                        if (chip.isChecked) {
-                            model.addFilter(source)
-                        } else {
-                            model.removeFilter(source)
-                        }
+            chip_container.removeAllViews()
+            sources.forEach { source ->
+                val chip = inflateMediaSources(source)
+                chip.setOnClickListener {
+                    if (chip.isChecked) {
+                        model.addFilter(source)
+                    } else {
+                        model.removeFilter(source)
                     }
                 }
+            }
         })
 
         model.refreshState.observe(this, Observer<RefreshState> { state ->
