@@ -1,5 +1,6 @@
 package uk.co.khaleelfreeman.spion.repo
 
+import uk.co.khaleelfreeman.spion.RefreshState
 import uk.co.khaleelfreeman.spion.service.Article
 
 interface Repository {
@@ -8,4 +9,5 @@ interface Repository {
     fun addFilter(source: String)
     fun removeFilter(source: String)
     fun getSources() : Set<String>
+    fun getRefreshState(): RefreshState
 }

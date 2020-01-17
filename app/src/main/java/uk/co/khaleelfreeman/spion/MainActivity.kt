@@ -19,7 +19,7 @@ import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolder
 import uk.co.khaleelfreeman.spion.repo.ArticleRepository
 import uk.co.khaleelfreeman.spion.service.Article
-import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,6 +66,17 @@ class MainActivity : AppCompatActivity() {
         })
 
         model.setRepository(ArticleRepository())
+
+        swipe_container.setOnRefreshListener {
+            model.fetchArticles()
+        }
+
+        swipe_container.setColorSchemeResources(
+            android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_red_light
+        )
     }
 
     override fun onResume() {
@@ -92,6 +103,12 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 }
+        })
+
+        model.refreshState.observe(this, Observer<RefreshState> { state ->
+            if (state == RefreshState.Complete) {
+                swipe_container.setRefreshing(false)
+            }
         })
         super.onResume()
     }

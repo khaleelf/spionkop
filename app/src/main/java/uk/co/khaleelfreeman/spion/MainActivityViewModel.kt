@@ -8,6 +8,8 @@ import uk.co.khaleelfreeman.spion.service.Article
 
 
 class MainActivityViewModel : ViewModel() {
+    private val _refreshState by lazy { MutableLiveData<RefreshState>() }
+    val refreshState: LiveData<RefreshState> = _refreshState
     private val _articles by lazy { MutableLiveData<Array<Article>>() }
     val articles: LiveData<Array<Article>> = _articles
     private val _sources by lazy { MutableLiveData<Set<String>>() }
@@ -18,6 +20,7 @@ class MainActivityViewModel : ViewModel() {
         repository.fetchArticles {
             val repoArticles = repository.getArticles()
             val repoSources = repository.getSources()
+            _refreshState.value = repository.getRefreshState()
             if (_articles.value == null) {
                 _articles.value = repoArticles
                 _sources.value = repoSources
@@ -43,4 +46,9 @@ class MainActivityViewModel : ViewModel() {
         repository.removeFilter(source)
         _articles.value = repository.getArticles()
     }
+}
+
+sealed class RefreshState {
+    object Complete : RefreshState()
+    object Fetching : RefreshState()
 }
