@@ -59,7 +59,7 @@ class ArticleAdapter(
         article: Article,
         holder: ViewHolder
     ) {
-        val date = formatTimeStamp(article.timeStamp.toLong())
+        val date = formatTimeStamp(article.timeStamp)
         holder.views.date.text = date
     }
 

@@ -41,7 +41,7 @@ class ArticleRepositoryTest {
     @Test
     fun `addFilter() should contain only articles that match the filter`(){
         articleRepository.addFilter("10 10")
-        val expected = arrayOf(Article(title="10", visual=Visual(url="10"), timeStamp="10", url="https:://www.10 10.com/liverpool"))
+        val expected = arrayOf(Article(title="10", visual=Visual(url="10"), timeStamp=10, url="https:://www.10 10.com/liverpool"))
         assert(articleRepository.getArticles().contentDeepEquals(expected))
     }
 
@@ -50,8 +50,8 @@ class ArticleRepositoryTest {
         articleRepository.addFilter("10 10")
         articleRepository.addFilter("9 9")
         val expected = arrayOf(
-            Article(title="10", visual=Visual(url="10"), timeStamp="10", url="https:://www.10 10.com/liverpool"),
-            Article(title="9", visual=Visual(url="9"), timeStamp="9", url="https:://www.9 9.com/liverpool")
+            Article(title="10", visual=Visual(url="10"), timeStamp=10, url="https:://www.10 10.com/liverpool"),
+            Article(title="9", visual=Visual(url="9"), timeStamp=9, url="https:://www.9 9.com/liverpool")
         )
         assert(articleRepository.getArticles().contentDeepEquals(expected))
     }
@@ -62,7 +62,7 @@ class ArticleRepositoryTest {
         articleRepository.addFilter("9 9")
         articleRepository.removeFilter("10 10")
         val expected = arrayOf(
-            Article(title="9", visual=Visual(url="9"), timeStamp="9", url="https:://www.9 9.com/liverpool")
+            Article(title="9", visual=Visual(url="9"), timeStamp=9, url="https:://www.9 9.com/liverpool")
         )
         assert(articleRepository.getArticles().contentDeepEquals(expected))
     }
@@ -83,7 +83,7 @@ class TestNetworkService : NetworkService {
                 Article(
                     item,
                     Visual(item),
-                    item,
+                    item.toLong(),
                     url = "https:://www.$item $item.com/liverpool"
                 )
             )
