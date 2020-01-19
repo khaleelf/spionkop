@@ -25,10 +25,7 @@ import uk.co.khaleelfreeman.spion.service.RefreshState
 class MainActivity : AppCompatActivity() {
 
     private val viewAdapter: ArticleAdapter by lazy {
-        ArticleAdapter(
-            emptyArray(),
-            ArticleViewHolder
-        )
+        ArticleAdapter(emptyArray(), ArticleViewHolder)
     }
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
     private val model by lazy { ViewModelProviders.of(this)[MainActivityViewModel::class.java] }
@@ -93,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         model.fetchArticles()
         model.articles.observe(this, Observer<Array<Article>> { articles ->
                 if (firstLaunch) {
-                    fadeOutLoader()
+                    fadeOutLoadingAnimation()
                     firstLaunch = false
                 }
                 val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
@@ -124,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
     }
 
-    private fun fadeOutLoader() {
+    private fun fadeOutLoadingAnimation() {
         val loaderFadeAnim = ObjectAnimator.ofFloat(loader, "alpha", 1f, 0f).apply {
             duration = 1000
         }
