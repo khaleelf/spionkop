@@ -19,6 +19,7 @@ import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolder
 import uk.co.khaleelfreeman.spion.repo.ArticleRepository
 import uk.co.khaleelfreeman.spion.service.Article
+import uk.co.khaleelfreeman.spion.service.RefreshState
 
 
 class MainActivity : AppCompatActivity() {
@@ -108,7 +109,7 @@ class MainActivity : AppCompatActivity() {
 
         model.refreshState.observe(this, Observer<RefreshState> { state ->
             if (state == RefreshState.Complete) {
-                swipe_container.setRefreshing(false)
+                swipe_container.isRefreshing = false
             }
         })
         super.onResume()

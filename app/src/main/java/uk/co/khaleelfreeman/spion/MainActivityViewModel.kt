@@ -1,11 +1,11 @@
 package uk.co.khaleelfreeman.spion
 
-import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import uk.co.khaleelfreeman.spion.repo.Repository
 import uk.co.khaleelfreeman.spion.service.Article
+import uk.co.khaleelfreeman.spion.service.RefreshState
 
 
 class MainActivityViewModel : ViewModel() {
@@ -19,18 +19,9 @@ class MainActivityViewModel : ViewModel() {
 
     fun fetchArticles() {
         repository.fetchArticles {
-            val repoArticles = repository.getArticles()
-            val repoSources = repository.getSources()
+            _articles.value = repository.getArticles()
+            _sources.value = repository.getSources()
             _refreshState.value = repository.getRefreshState()
-            if (_articles.value == null) {
-                _articles.value = repoArticles
-                _sources.value = repoSources
-            } else {
-                if (!_articles.value!!.contentDeepEquals(repoArticles)){
-                    _articles.value = repoArticles
-                    _sources.value = repoSources
-                }
-            }
         }
     }
 
@@ -47,9 +38,4 @@ class MainActivityViewModel : ViewModel() {
         repository.removeFilter(source)
         _articles.value = repository.getArticles()
     }
-}
-
-sealed class RefreshState {
-    object Complete : RefreshState()
-    object Fetching : RefreshState()
 }

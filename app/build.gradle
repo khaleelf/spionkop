@@ -10,8 +10,8 @@ android {
         applicationId "uk.co.khaleelfreeman.spion"
         minSdkVersion 22
         targetSdkVersion 28
-        versionCode 5
-        versionName "1.1.0f"
+        versionCode 6
+        versionName "1.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

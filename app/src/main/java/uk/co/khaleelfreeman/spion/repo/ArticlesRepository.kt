@@ -2,17 +2,17 @@ package uk.co.khaleelfreeman.spion.repo
 
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import uk.co.khaleelfreeman.spion.RefreshState
 import uk.co.khaleelfreeman.spion.service.Article
 import uk.co.khaleelfreeman.spion.service.ArticleNetworkService
 import uk.co.khaleelfreeman.spion.service.NetworkService
+import uk.co.khaleelfreeman.spion.service.RefreshState
 import uk.co.khaleelfreeman.spion.util.mediaSources
 
 class ArticleRepository(private val articleNetworkService: NetworkService = ArticleNetworkService()) :
     Repository {
     private var _refreshState: RefreshState = RefreshState.Fetching
     private var articles: Array<Article> = emptyArray()
-    private val THIRTY_MIN_IN_MILLIS = DateTime(1800000L)
+    private val thiryMinInMillis = DateTime(1800000L)
     private var filteredArticles = emptyArray<Article>()
     private lateinit var _sources: Set<String>
     private val articlefilters: MutableMap<String, Array<Article>> = mutableMapOf()
@@ -30,7 +30,7 @@ class ArticleRepository(private val articleNetworkService: NetworkService = Arti
     }
 
     override fun fetchArticles(callback: () -> Unit) {
-        if (currentTimeMinusPublished() > THIRTY_MIN_IN_MILLIS) {
+        if (currentTimeMinusPublished().isAfter(thiryMinInMillis)) {
             _refreshState = RefreshState.Fetching
             articleNetworkService.execute { response ->
                 published = response.published

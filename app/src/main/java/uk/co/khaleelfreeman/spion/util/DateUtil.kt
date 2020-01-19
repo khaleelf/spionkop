@@ -1,10 +1,19 @@
 package uk.co.khaleelfreeman.spion.util
 
-import uk.co.khaleelfreeman.spion.service.Article
 import java.util.*
 
-fun formatDate(article: Article): String {
-    val dateWords =
-        Date(article.timeStamp.toLong()).toString().split(" ", ignoreCase = true)
-    return "${dateWords[0]} ${dateWords[1]} ${dateWords[2]}"
+fun formatTimeStamp(timeStamp: Long): String {
+    return keyDateInfo(
+        dateInformation(
+            Date(timeStamp)
+        )
+    )
+}
+
+private fun keyDateInfo(dateInfo: Iterable<String>): String {
+    return dateInfo.take(3).reduce { acc, item -> "$acc $item" }
+}
+
+private fun dateInformation(date: Date): Iterable<String> {
+    return date.toString().split(" ", ignoreCase = true)
 }
