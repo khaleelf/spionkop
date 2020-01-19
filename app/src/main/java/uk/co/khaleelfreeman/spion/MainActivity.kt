@@ -39,16 +39,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         toolbar.inflateMenu(R.menu.menu_item)
 
-        toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.info -> {
-                    showInfo()
-                    true
-                }
-                else -> super.onOptionsItemSelected(it)
-            }
+        setupToolbar()
+        setupRecyclerView()
+        setupSwipeToRefresh()
+        model.setRepository(ArticleRepository())
+    }
+
+    private fun setupSwipeToRefresh() {
+        swipe_container.setOnRefreshListener {
+            model.fetchArticles()
         }
 
+        swipe_container.setColorSchemeResources(
+            android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_red_light
+        )
+    }
+
+    private fun setupRecyclerView() {
         recycler_view.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -65,19 +75,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
 
-        model.setRepository(ArticleRepository())
-
-        swipe_container.setOnRefreshListener {
-            model.fetchArticles()
+    private fun setupToolbar() {
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.info -> {
+                    showInfo()
+                    true
+                }
+                else -> super.onOptionsItemSelected(it)
+            }
         }
-
-        swipe_container.setColorSchemeResources(
-            android.R.color.holo_blue_bright,
-            android.R.color.holo_green_light,
-            android.R.color.holo_orange_light,
-            android.R.color.holo_red_light
-        )
     }
 
     override fun onResume() {
