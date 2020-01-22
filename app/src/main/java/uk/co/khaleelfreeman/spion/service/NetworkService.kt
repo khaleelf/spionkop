@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Response
 
 interface NetworkService {
     fun execute(response: (ArticleResponse) -> Unit)
@@ -22,7 +23,7 @@ class ArticleNetworkService(private val httpClient: HttpClient = RetrofitClient(
 
             override fun onResponse(
                 call: Call<ArticleResponse>,
-                response: retrofit2.Response<ArticleResponse>
+                response: Response<ArticleResponse>
             ) {
                 response(ArticleResponse(
                     response.body()?.published ?: 0L,

@@ -2,14 +2,12 @@ package uk.co.khaleelfreeman.spion.util
 
 import java.util.*
 
-// TODO: Can this final method call be made nicer.
+/**
+ * Playing around with function composition.
+ */
 
 fun formatTimeStamp(timeStamp: Long): String {
-    return keyDateInfo(
-        dateInformation(
-            Date(timeStamp)
-        )
-    )
+    return compose(::keyDateInfo, ::dateInformation)(Date(timeStamp))
 }
 
 private fun keyDateInfo(dateInfo: Iterable<String>): String {
@@ -18,4 +16,8 @@ private fun keyDateInfo(dateInfo: Iterable<String>): String {
 
 private fun dateInformation(date: Date): Iterable<String> {
     return date.toString().split(" ", ignoreCase = true)
+}
+
+fun <A, B, C> compose(f: (B) -> C, g: (A) -> B): (A) -> C {
+    return { x -> f(g(x)) }
 }

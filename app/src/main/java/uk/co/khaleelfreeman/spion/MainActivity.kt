@@ -1,10 +1,12 @@
 package uk.co.khaleelfreeman.spion
 
+import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -20,6 +22,7 @@ import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolder
 import uk.co.khaleelfreeman.spion.repo.ArticleRepository
 import uk.co.khaleelfreeman.spion.service.Article
 import uk.co.khaleelfreeman.spion.service.RefreshState
+import uk.co.khaleelfreeman.spion.util.compose
 
 
 class MainActivity : AppCompatActivity() {
@@ -122,20 +125,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fadeOutLoadingAnimation() {
-        val loaderFadeAnim = ObjectAnimator.ofFloat(loader, "alpha", 1f, 0f).apply {
-            duration = 1000
-        }
-        val recyclerFadeAnim = ObjectAnimator.ofFloat(recycler_view, "alpha", 0f, 1f).apply {
-            duration = 1000
-        }
-
-        val sourcesFadeAnim = ObjectAnimator.ofFloat(chip_container, "alpha", 0f, 1f).apply {
-            duration = 1000
-        }
+        val fadeIn = fade(0f, 1f)
+        val fadeOut = fade(1f, 0f)
 
         AnimatorSet().apply {
-            play(loaderFadeAnim).before(recyclerFadeAnim).before(sourcesFadeAnim)
+            play(fadeOut(loader)).before(fadeIn(recycler_view)).before(fadeIn(chip_container))
             start()
+        }
+    }
+
+    private fun fade(from: Float, to: Float): (view : View) -> Animator {
+        return { v->
+            ObjectAnimator.ofFloat(v, "alpha", from, to).apply {
+                duration = 1000
+            }
         }
     }
 

@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface HttpClient {
-    val service: ArticlesService
+    val service: Articles
 }
 
 class RetrofitClient : HttpClient {
@@ -14,12 +14,10 @@ class RetrofitClient : HttpClient {
         .baseUrl("https://www.khaleelfreeman.co.uk/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
-    override val service: ArticlesService = retrofit.create<ArticlesService>(
-        ArticlesService::class.java
-    )
+    override val service: Articles = retrofit.create(Articles::class.java)
 }
 
-interface ArticlesService {
+interface Articles {
     @GET("liverpoolfc/articles")
     fun getArticles(): Call<ArticleResponse>
 }
