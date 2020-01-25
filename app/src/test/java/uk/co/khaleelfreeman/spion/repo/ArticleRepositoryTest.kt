@@ -1,14 +1,14 @@
 package uk.co.khaleelfreeman.spion.repo
 
-import org.junit.Test
-
-import org.junit.Assert.*
+import io.reactivex.Single
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Test
 import uk.co.khaleelfreeman.spion.service.Article
 import uk.co.khaleelfreeman.spion.service.ArticleResponse
 import uk.co.khaleelfreeman.spion.service.NetworkService
 import uk.co.khaleelfreeman.spion.service.Visual
-import java.lang.reflect.Array
 
 class ArticleRepositoryTest {
 
@@ -22,46 +22,74 @@ class ArticleRepositoryTest {
 
     @Test
     fun `getSources() strips out the domain name from the url and returns a unique set`() {
-        assert(articleRepository.getSources().containsAll((1..10).toSet().map { it.toString() }))
+        val expectedSources = (1..10).toSet()
+            .map { "$it $it" } // a source will look like "1 1" according to how the TestNetworkService is setup.
+        assert(articleRepository.getSources().containsAll(expectedSources))
     }
 
     @Test
     fun `getPublished() returns the published time from the service`() {
-        testNetworkService.execute {
-            assertEquals(articleRepository.published, it.published)
-        }
+        val expected = testNetworkService.published
+        assertEquals(expected, articleRepository.published)
     }
 
     @Test
     fun `getArticles() should return the articles from the service`() {
-        assertArrayEquals(articleRepository.getArticles(), testNetworkService.articles)
+        val expected = testNetworkService.articles
+        assertArrayEquals(expected, articleRepository.getArticles())
     }
 
     @Test
-    fun `addFilter() should all remove articles that don't match filter`(){
-        articleRepository.addFilter("10")
-        assert(articleRepository.getArticles().contentDeepEquals(arrayOf(Article(title="10", visual=Visual(url="10"), timeStamp="10", url="https:://www.10.com/liverpool"))))
+    fun `addFilter() should contain only articles that match the filter`(){
+        articleRepository.addFilter("10 10")
+        val expected = arrayOf(Article(title="10", visual=Visual(url="10"), timeStamp=10, url="https:://www.10 10.com/liverpool"))
+        assert(articleRepository.getArticles().contentDeepEquals(expected))
     }
 
     @Test
-    fun `removeFilter() should add articles when no filter applied`(){
-        articleRepository.removeFilter("10")
-        assert(articleRepository.getArticles().contentDeepEquals(testNetworkService.articles))
+    fun `addFilter() called with different filters should return article array with multiple articles`(){
+        articleRepository.addFilter("10 10")
+        articleRepository.addFilter("9 9")
+        val expected = arrayOf(
+            Article(title="10", visual=Visual(url="10"), timeStamp=10, url="https:://www.10 10.com/liverpool"),
+            Article(title="9", visual=Visual(url="9"), timeStamp=9, url="https:://www.9 9.com/liverpool")
+        )
+        assert(articleRepository.getArticles().contentDeepEquals(expected))
+    }
+
+    @Test
+    fun `removeFilter() should remove articles from the filterd array`(){
+        articleRepository.addFilter("10 10")
+        articleRepository.addFilter("9 9")
+        articleRepository.removeFilter("10 10")
+        val expected = arrayOf(
+            Article(title="9", visual=Visual(url="9"), timeStamp=9, url="https:://www.9 9.com/liverpool")
+        )
+        assert(articleRepository.getArticles().contentDeepEquals(expected))
     }
 }
 
 class TestNetworkService : NetworkService {
 
     val articles = generateTestArticles()
+    val published = 1578574582000
 
-    override fun execute(response: (ArticleResponse) -> Unit) {
-        response(ArticleResponse(1578574582000, articles))
+    override fun execute(): Single<ArticleResponse> {
+        return Single.create<ArticleResponse> {
+            it.onSuccess(ArticleResponse(published, articles))
+        }
     }
 
     private fun generateTestArticles() : kotlin.Array<Article> {
         return (1..10).map { it.toString() }.fold(emptyArray(),{acc, item ->
-            acc.plus(Article(item, Visual(item),item,url = "https:://www.${item}.com/liverpool"))
+            acc.plus(
+                Article(
+                    item,
+                    Visual(item),
+                    item.toLong(),
+                    url = "https:://www.$item $item.com/liverpool"
+                )
+            )
         })
     }
-
 }

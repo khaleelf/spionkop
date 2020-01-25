@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import uk.co.khaleelfreeman.spion.repo.Repository
 import uk.co.khaleelfreeman.spion.service.Article
+import uk.co.khaleelfreeman.spion.service.RefreshState
 
 
 class MainActivityViewModel : ViewModel() {
+    private val _refreshState by lazy { MutableLiveData<RefreshState>() }
+    val refreshState: LiveData<RefreshState> = _refreshState
     private val _articles by lazy { MutableLiveData<Array<Article>>() }
     val articles: LiveData<Array<Article>> = _articles
     private val _sources by lazy { MutableLiveData<Set<String>>() }
@@ -16,17 +19,9 @@ class MainActivityViewModel : ViewModel() {
 
     fun fetchArticles() {
         repository.fetchArticles {
-            val repoArticles = repository.getArticles()
-            val repoSources = repository.getSources()
-            if (_articles.value == null) {
-                _articles.value = repoArticles
-                _sources.value = repoSources
-            } else {
-                if (!_articles.value!!.contentDeepEquals(repoArticles)){
-                    _articles.value = repoArticles
-                    _sources.value = repoSources
-                }
-            }
+            _articles.value = repository.getArticles()
+            _sources.value = repository.getSources()
+            _refreshState.value = repository.getRefreshState()
         }
     }
 
@@ -42,5 +37,9 @@ class MainActivityViewModel : ViewModel() {
     fun removeFilter(source: String) {
         repository.removeFilter(source)
         _articles.value = repository.getArticles()
+    }
+
+    override fun onCleared() {
+        repository.teardown()
     }
 }

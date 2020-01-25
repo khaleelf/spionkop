@@ -1,10 +1,12 @@
 package uk.co.khaleelfreeman.spion
 
+import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -19,15 +21,14 @@ import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolder
 import uk.co.khaleelfreeman.spion.repo.ArticleRepository
 import uk.co.khaleelfreeman.spion.service.Article
-import java.util.*
+import uk.co.khaleelfreeman.spion.service.RefreshState
+import uk.co.khaleelfreeman.spion.util.compose
+
 
 class MainActivity : AppCompatActivity() {
 
     private val viewAdapter: ArticleAdapter by lazy {
-        ArticleAdapter(
-            emptyArray(),
-            ArticleViewHolder
-        )
+        ArticleAdapter(emptyArray(), ArticleViewHolder)
     }
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
     private val model by lazy { ViewModelProviders.of(this)[MainActivityViewModel::class.java] }
@@ -38,16 +39,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         toolbar.inflateMenu(R.menu.menu_item)
 
-        toolbar.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.info -> {
-                    showInfo()
-                    true
-                }
-                else -> super.onOptionsItemSelected(it)
-            }
+        setupToolbar()
+        setupRecyclerView()
+        setupSwipeToRefresh()
+        model.setRepository(ArticleRepository())
+    }
+
+    private fun setupSwipeToRefresh() {
+        swipe_container.setOnRefreshListener {
+            model.fetchArticles()
         }
 
+        swipe_container.setColorSchemeResources(
+            android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            android.R.color.holo_orange_light,
+            android.R.color.holo_red_light
+        )
+    }
+
+    private fun setupRecyclerView() {
         recycler_view.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
@@ -64,15 +75,25 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+    }
 
-        model.setRepository(ArticleRepository())
+    private fun setupToolbar() {
+        toolbar.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.info -> {
+                    showInfo()
+                    true
+                }
+                else -> super.onOptionsItemSelected(it)
+            }
+        }
     }
 
     override fun onResume() {
         model.fetchArticles()
         model.articles.observe(this, Observer<Array<Article>> { articles ->
                 if (firstLaunch) {
-                    fadeOutLoader()
+                    fadeOutLoadingAnimation()
                     firstLaunch = false
                 }
                 val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
@@ -82,35 +103,42 @@ class MainActivity : AppCompatActivity() {
         })
 
         model.sources.observe(this, Observer<Set<String>> { sources ->
-                sources.forEach { source ->
-                    val chip = inflateMediaSources(source)
-                    chip.setOnClickListener {
-                        if (chip.isChecked) {
-                            model.addFilter(source)
-                        } else {
-                            model.removeFilter(source)
-                        }
+            chip_container.removeAllViews()
+            sources.forEach { source ->
+                val chip = inflateMediaSources(source)
+                chip.setOnClickListener {
+                    if (chip.isChecked) {
+                        model.addFilter(source)
+                    } else {
+                        model.removeFilter(source)
                     }
                 }
+            }
+        })
+
+        model.refreshState.observe(this, Observer<RefreshState> { state ->
+            if (state == RefreshState.Complete) {
+                swipe_container.isRefreshing = false
+            }
         })
         super.onResume()
     }
 
-    private fun fadeOutLoader() {
-        val loaderFadeAnim = ObjectAnimator.ofFloat(loader, "alpha", 1f, 0f).apply {
-            duration = 1000
-        }
-        val recyclerFadeAnim = ObjectAnimator.ofFloat(recycler_view, "alpha", 0f, 1f).apply {
-            duration = 1000
-        }
-
-        val sourcesFadeAnim = ObjectAnimator.ofFloat(chip_container, "alpha", 0f, 1f).apply {
-            duration = 1000
-        }
+    private fun fadeOutLoadingAnimation() {
+        val fadeIn = fade(0f, 1f)
+        val fadeOut = fade(1f, 0f)
 
         AnimatorSet().apply {
-            play(loaderFadeAnim).before(recyclerFadeAnim).before(sourcesFadeAnim)
+            play(fadeOut(loader)).before(fadeIn(recycler_view)).before(fadeIn(chip_container))
             start()
+        }
+    }
+
+    private fun fade(from: Float, to: Float): (view : View) -> Animator {
+        return { v->
+            ObjectAnimator.ofFloat(v, "alpha", from, to).apply {
+                duration = 1000
+            }
         }
     }
 

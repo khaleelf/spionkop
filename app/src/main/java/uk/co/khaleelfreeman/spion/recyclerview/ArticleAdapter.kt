@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import uk.co.khaleelfreeman.spion.*
-import uk.co.khaleelfreeman.spion.util.formatDate
 import uk.co.khaleelfreeman.spion.service.Article
+import uk.co.khaleelfreeman.spion.util.formatTimeStamp
 
 class ArticleAdapter(
     var articles: Array<Article>,
@@ -59,7 +59,7 @@ class ArticleAdapter(
         article: Article,
         holder: ViewHolder
     ) {
-        val date = formatDate(article)
+        val date = formatTimeStamp(article.timeStamp)
         holder.views.date.text = date
     }
 
