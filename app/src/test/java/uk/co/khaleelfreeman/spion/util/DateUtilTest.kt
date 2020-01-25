@@ -1,9 +1,7 @@
 package uk.co.khaleelfreeman.spion.util
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
-import uk.co.khaleelfreeman.spion.service.Article
 
 class DateUtilTest {
 

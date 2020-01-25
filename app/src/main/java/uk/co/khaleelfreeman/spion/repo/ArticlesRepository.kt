@@ -1,5 +1,6 @@
 package uk.co.khaleelfreeman.spion.repo
 
+import io.reactivex.disposables.Disposable
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import uk.co.khaleelfreeman.spion.service.Article
@@ -12,10 +13,11 @@ class ArticleRepository(private val articleNetworkService: NetworkService = Arti
     Repository {
     private var _refreshState: RefreshState = RefreshState.Fetching
     private var articles: Array<Article> = emptyArray()
-    private val thiryMinInMillis = DateTime(1800000L)
+    private val thirtyMinInMillis = DateTime(1800000L)
     private var filteredArticles = emptyArray<Article>()
     private lateinit var _sources: Set<String>
-    private val articlefilters: MutableMap<String, Array<Article>> = mutableMapOf()
+    private val articleFilters: MutableMap<String, Array<Article>> = mutableMapOf()
+    private lateinit var d: Disposable
     var published: Long = 0L
         private set(value) {
             field = value
@@ -30,13 +32,13 @@ class ArticleRepository(private val articleNetworkService: NetworkService = Arti
     }
 
     override fun fetchArticles(callback: () -> Unit) {
-        if (currentTimeMinusPublished().isAfter(thiryMinInMillis)) {
+        if (currentTimeMinusPublished().isAfter(thirtyMinInMillis)) {
             _refreshState = RefreshState.Fetching
-            articleNetworkService.execute { response ->
+            d = articleNetworkService.execute().subscribe { response ->
                 published = response.published
                 articles = response.articles
                 _sources = mediaSources(response.articles)
-                //create seperate lists from each source
+                //create separate lists from each source
                 generateFilteredArticles(_sources, articles)
                 _refreshState = RefreshState.Complete
                 callback()
@@ -51,18 +53,21 @@ class ArticleRepository(private val articleNetworkService: NetworkService = Arti
         sources: Set<String>,
         articles: Array<Article>
     ) {
-        sources.forEach { source : String ->
-            val filteredArticle : Array<Article> = articles.filter { article -> article.url.contains(source)}.toTypedArray()
-            articlefilters[source] = filteredArticle
+        sources.forEach { source: String ->
+            val filteredArticle: Array<Article> =
+                articles.filter { article -> article.url.contains(source) }.toTypedArray()
+            articleFilters[source] = filteredArticle
         }
     }
 
     override fun addFilter(source: String) {
-        filteredArticles += articlefilters[source]!!
+        filteredArticles += articleFilters[source]!!
     }
 
     override fun removeFilter(source: String) {
-        filteredArticles = filteredArticles.filterNot { article -> articlefilters[source]!!.any { it == article } }.toTypedArray()
+        filteredArticles =
+            filteredArticles.filterNot { article -> articleFilters[source]!!.any { it == article } }
+                .toTypedArray()
     }
 
     override fun getSources(): Set<String> = _sources
@@ -75,4 +80,8 @@ class ArticleRepository(private val articleNetworkService: NetworkService = Arti
     private fun currentTimeMinusPublished() = DateTime().toDateTime(DateTimeZone.UTC).minus(
         published
     )
+
+    override fun teardown() {
+        d.dispose()
+    }
 }

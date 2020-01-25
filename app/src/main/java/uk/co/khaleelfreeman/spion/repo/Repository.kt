@@ -10,4 +10,5 @@ interface Repository {
     fun removeFilter(source: String)
     fun getSources() : Set<String>
     fun getRefreshState(): RefreshState
+    fun teardown()
 }

@@ -1,5 +1,6 @@
 package uk.co.khaleelfreeman.spion.repo
 
+import io.reactivex.Single
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -73,8 +74,10 @@ class TestNetworkService : NetworkService {
     val articles = generateTestArticles()
     val published = 1578574582000
 
-    override fun execute(response: (ArticleResponse) -> Unit) {
-        response(ArticleResponse(published, articles))
+    override fun execute(): Single<ArticleResponse> {
+        return Single.create<ArticleResponse> {
+            it.onSuccess(ArticleResponse(published, articles))
+        }
     }
 
     private fun generateTestArticles() : kotlin.Array<Article> {

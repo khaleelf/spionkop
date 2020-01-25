@@ -38,4 +38,8 @@ class MainActivityViewModel : ViewModel() {
         repository.removeFilter(source)
         _articles.value = repository.getArticles()
     }
+
+    override fun onCleared() {
+        repository.teardown()
+    }
 }
