@@ -5,10 +5,10 @@ import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import uk.co.khaleelfreeman.spion.service.Article
-import uk.co.khaleelfreeman.spion.service.ArticleResponse
 import uk.co.khaleelfreeman.spion.service.NetworkService
-import uk.co.khaleelfreeman.spion.service.Visual
+import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
+import uk.co.khaleelfreeman.spion.service.retrofit.dto.ArticleResponse
+import uk.co.khaleelfreeman.spion.service.retrofit.dto.Visual
 
 class ArticleRepositoryTest {
 
@@ -17,7 +17,7 @@ class ArticleRepositoryTest {
 
     @Before
     fun setup() {
-        articleRepository.fetchArticles {  }
+        articleRepository.fetchArticles { }
     }
 
     @Test
@@ -40,30 +40,52 @@ class ArticleRepositoryTest {
     }
 
     @Test
-    fun `addFilter() should contain only articles that match the filter`(){
+    fun `addFilter() should contain only articles that match the filter`() {
         articleRepository.addFilter("10 10")
-        val expected = arrayOf(Article(title="10", visual=Visual(url="10"), timeStamp=10, url="https:://www.10 10.com/liverpool"))
-        assert(articleRepository.getArticles().contentDeepEquals(expected))
-    }
-
-    @Test
-    fun `addFilter() called with different filters should return article array with multiple articles`(){
-        articleRepository.addFilter("10 10")
-        articleRepository.addFilter("9 9")
         val expected = arrayOf(
-            Article(title="10", visual=Visual(url="10"), timeStamp=10, url="https:://www.10 10.com/liverpool"),
-            Article(title="9", visual=Visual(url="9"), timeStamp=9, url="https:://www.9 9.com/liverpool")
+            Article(
+                title = "10",
+                visual = Visual(url = "10"),
+                timeStamp = 10,
+                url = "https:://www.10 10.com/liverpool"
+            )
         )
         assert(articleRepository.getArticles().contentDeepEquals(expected))
     }
 
     @Test
-    fun `removeFilter() should remove articles from the filterd array`(){
+    fun `addFilter() called with different filters should return article array with multiple articles`() {
+        articleRepository.addFilter("10 10")
+        articleRepository.addFilter("9 9")
+        val expected = arrayOf(
+            Article(
+                title = "10",
+                visual = Visual(url = "10"),
+                timeStamp = 10,
+                url = "https:://www.10 10.com/liverpool"
+            ),
+            Article(
+                title = "9",
+                visual = Visual(url = "9"),
+                timeStamp = 9,
+                url = "https:://www.9 9.com/liverpool"
+            )
+        )
+        assert(articleRepository.getArticles().contentDeepEquals(expected))
+    }
+
+    @Test
+    fun `removeFilter() should remove articles from the filterd array`() {
         articleRepository.addFilter("10 10")
         articleRepository.addFilter("9 9")
         articleRepository.removeFilter("10 10")
         val expected = arrayOf(
-            Article(title="9", visual=Visual(url="9"), timeStamp=9, url="https:://www.9 9.com/liverpool")
+            Article(
+                title = "9",
+                visual = Visual(url = "9"),
+                timeStamp = 9,
+                url = "https:://www.9 9.com/liverpool"
+            )
         )
         assert(articleRepository.getArticles().contentDeepEquals(expected))
     }
@@ -80,8 +102,8 @@ class TestNetworkService : NetworkService {
         }
     }
 
-    private fun generateTestArticles() : kotlin.Array<Article> {
-        return (1..10).map { it.toString() }.fold(emptyArray(),{acc, item ->
+    private fun generateTestArticles(): kotlin.Array<Article> {
+        return (1..10).map { it.toString() }.fold(emptyArray(), { acc, item ->
             acc.plus(
                 Article(
                     item,

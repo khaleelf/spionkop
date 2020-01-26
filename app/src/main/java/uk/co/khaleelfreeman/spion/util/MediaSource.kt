@@ -1,6 +1,6 @@
 package uk.co.khaleelfreeman.spion.util
 
-import uk.co.khaleelfreeman.spion.service.Article
+import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
 
 fun mediaSources(articles: Array<Article>): Set<String> {
     return articles.map { it.url }.map {

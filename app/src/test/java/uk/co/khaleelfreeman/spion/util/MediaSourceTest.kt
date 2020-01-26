@@ -1,8 +1,8 @@
 package uk.co.khaleelfreeman.spion.util
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
-import uk.co.khaleelfreeman.spion.service.Article
+import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
 
 class MediaSourceTest {
 
