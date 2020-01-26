@@ -1,7 +1,7 @@
 package uk.co.khaleelfreeman.spion.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
-import uk.co.khaleelfreeman.spion.service.Article
+import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
 
 class ArticleDiffUtilCallback(private val oldArticles: Array<Article>, private val newArticles: Array<Article>) : DiffUtil.Callback() {
 

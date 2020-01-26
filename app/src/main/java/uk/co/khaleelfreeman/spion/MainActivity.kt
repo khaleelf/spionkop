@@ -9,7 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,9 +20,8 @@ import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolder
 import uk.co.khaleelfreeman.spion.repo.ArticleRepository
-import uk.co.khaleelfreeman.spion.service.Article
 import uk.co.khaleelfreeman.spion.service.RefreshState
-import uk.co.khaleelfreeman.spion.util.compose
+import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
 
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         ArticleAdapter(emptyArray(), ArticleViewHolder)
     }
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
-    private val model by lazy { ViewModelProviders.of(this)[MainActivityViewModel::class.java] }
+    private val model by lazy { ViewModelProvider(this)[MainActivityViewModel::class.java] }
     private var firstLaunch = true
 
     override fun onCreate(savedInstanceState: Bundle?) {

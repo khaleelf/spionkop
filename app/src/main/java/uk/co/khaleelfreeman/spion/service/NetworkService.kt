@@ -1,11 +1,12 @@
 package uk.co.khaleelfreeman.spion.service
 
 import android.util.Log
-import com.google.gson.annotations.SerializedName
 import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import uk.co.khaleelfreeman.spion.service.retrofit.RetrofitClient
+import uk.co.khaleelfreeman.spion.service.retrofit.dto.ArticleResponse
 
 interface NetworkService {
     fun execute() : Single<ArticleResponse>
@@ -39,20 +40,3 @@ class ArticleNetworkService(private val httpClient: HttpClient = RetrofitClient(
         }
     }
 }
-
-data class ArticleResponse(
-    @SerializedName("feed_last_published")
-    val published: Long,
-    val articles: Array<Article>
-)
-
-data class Article(
-    val title: String = "",
-    val visual: Visual = Visual(),
-    @SerializedName("published")
-    val timeStamp: Long = 0L,
-    @SerializedName("originId")
-    val url: String = ""
-)
-
-data class Visual(val url: String = "")

@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import uk.co.khaleelfreeman.spion.repo.Repository
-import uk.co.khaleelfreeman.spion.service.Article
 import uk.co.khaleelfreeman.spion.service.RefreshState
+import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
 
 
 class MainActivityViewModel : ViewModel() {
