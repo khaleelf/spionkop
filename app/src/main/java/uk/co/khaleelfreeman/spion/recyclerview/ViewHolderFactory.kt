@@ -13,18 +13,14 @@ interface ViewHolderFactory {
     fun getViewHolder(viewType: Int, parent: ViewGroup): ViewHolder
 }
 
-object ArticleViewHolder :
+object ArticleViewHolderFactory :
     ViewHolderFactory {
     override fun getViewHolder(viewType: Int, parent: ViewGroup): ViewHolder {
-        val article =
-            getLayout(
-                viewType,
-                parent
-            )
+        val article = getLayout(viewType, parent)
 
         return when (viewType) {
             ArticleType.FIRST_FEATURED.ordinal -> ViewHolder(
-                Views(
+                ArticleView(
                     article.findViewById(R.id.featured_article_title),
                     article.findViewById(R.id.featured_article_date),
                     article.findViewById(R.id.featured_article_image),
@@ -32,7 +28,7 @@ object ArticleViewHolder :
                 )
             )
             ArticleType.FEATURED.ordinal -> ViewHolder(
-                Views(
+                ArticleView(
                     article.findViewById(R.id.featured_article_title),
                     article.findViewById(R.id.featured_article_date),
                     article.findViewById(R.id.featured_article_image),
@@ -40,7 +36,7 @@ object ArticleViewHolder :
                 )
             )
             ArticleType.FIRST_GENERAL.ordinal -> ViewHolder(
-                Views(
+                ArticleView(
                     article.findViewById(R.id.general_article_title),
                     article.findViewById(R.id.general_article_time_stamp),
                     article.findViewById(R.id.general_article_image),
@@ -48,7 +44,7 @@ object ArticleViewHolder :
                 )
             )
             else -> ViewHolder(
-                Views(
+                ArticleView(
                     article.findViewById(R.id.general_article_title),
                     article.findViewById(R.id.general_article_time_stamp),
                     article.findViewById(R.id.general_article_image),
@@ -84,7 +80,7 @@ object ArticleViewHolder :
     }
 }
 
-data class Views(
+data class ArticleView(
     val title: TextView,
     val date: TextView,
     val image: ImageView,
