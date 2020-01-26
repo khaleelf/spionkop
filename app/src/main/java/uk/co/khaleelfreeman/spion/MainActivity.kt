@@ -16,10 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
-import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolder
-import uk.co.khaleelfreeman.spion.repo.ArticleRepository
+import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolderFactory
+import uk.co.khaleelfreeman.spion.repo.Repository
 import uk.co.khaleelfreeman.spion.service.RefreshState
 import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
 
@@ -27,11 +28,12 @@ import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
 class MainActivity : AppCompatActivity() {
 
     private val viewAdapter: ArticleAdapter by lazy {
-        ArticleAdapter(emptyArray(), ArticleViewHolder)
+        ArticleAdapter(emptyArray(), ArticleViewHolderFactory)
     }
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
     private val model by lazy { ViewModelProvider(this)[MainActivityViewModel::class.java] }
     private var firstLaunch = true
+    val repo : Repository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         setupToolbar()
         setupRecyclerView()
         setupSwipeToRefresh()
-        model.setRepository(ArticleRepository())
+        model.setRepository(repo)
     }
 
     private fun setupSwipeToRefresh() {

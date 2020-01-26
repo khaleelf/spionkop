@@ -16,7 +16,7 @@ class ArticleAdapter(
 ) :
     RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
 
-    class ViewHolder(val views: Views) : RecyclerView.ViewHolder(views.root)
+    class ViewHolder(val articleView: ArticleView) : RecyclerView.ViewHolder(articleView.root)
 
     override fun getItemViewType(position: Int): Int {
         return when (position) {
@@ -45,14 +45,14 @@ class ArticleAdapter(
         holder: ViewHolder,
         position: Int
     ) {
-        holder.views.title.text = articles[position].title
+        holder.articleView.title.text = articles[position].title
     }
 
     private fun loadImage(
         holder: ViewHolder,
         position: Int
     ) {
-        Glide.with(holder.views.root).load(articles[position].visual.url).into(holder.views.image)
+        Glide.with(holder.articleView.root).load(articles[position].visual.url).into(holder.articleView.image)
     }
 
     private fun setDate(
@@ -60,7 +60,7 @@ class ArticleAdapter(
         holder: ViewHolder
     ) {
         val date = formatTimeStamp(article.timeStamp)
-        holder.views.date.text = date
+        holder.articleView.date.text = date
     }
 
     private fun setViewClickListenerForCustomTabs(
@@ -68,12 +68,12 @@ class ArticleAdapter(
         position: Int
     ) {
         val builder = CustomTabsIntent.Builder()
-        builder.setToolbarColor(getColor(holder.views.root.context,
+        builder.setToolbarColor(getColor(holder.articleView.root.context,
             R.color.primaryColor
         ))
         val customTabsIntent = builder.build()
-        holder.views.root.setOnClickListener {
-            customTabsIntent.launchUrl(holder.views.root.context, Uri.parse(articles[position].url))
+        holder.articleView.root.setOnClickListener {
+            customTabsIntent.launchUrl(holder.articleView.root.context, Uri.parse(articles[position].url))
         }
     }
 

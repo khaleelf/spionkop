@@ -23,7 +23,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <TextView
-        android:text="Libraries:\nLottie, Glide, Retrofit, Joda Time and Gson.\n"
+        android:text="Libraries:\nLottie, Glide, Retrofit, Joda Time, Gson and Koin.\n"
         android:textSize="@dimen/text_size_medium"
         android:layout_width="0dp"
         android:layout_height="0dp"
