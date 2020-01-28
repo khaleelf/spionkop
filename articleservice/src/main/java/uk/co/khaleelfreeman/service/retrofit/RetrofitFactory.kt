@@ -1,4 +1,4 @@
-package co.uk.khaleelfreeman.service.retrofit
+package uk.co.khaleelfreeman.service.retrofit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

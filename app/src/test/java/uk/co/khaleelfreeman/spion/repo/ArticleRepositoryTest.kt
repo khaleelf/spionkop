@@ -5,10 +5,10 @@ import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import co.uk.khaleelfreeman.service.NetworkService
-import co.uk.khaleelfreeman.service.retrofit.dto.Article
-import co.uk.khaleelfreeman.service.retrofit.dto.ArticleResponse
-import co.uk.khaleelfreeman.service.retrofit.dto.Visual
+import uk.co.khaleelfreeman.service.NetworkService
+import uk.co.khaleelfreeman.service.retrofit.dto.Article
+import uk.co.khaleelfreeman.service.retrofit.dto.ArticleResponse
+import uk.co.khaleelfreeman.service.retrofit.dto.Visual
 
 class ArticleRepositoryTest {
 

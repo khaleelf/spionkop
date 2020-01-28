@@ -1,4 +1,4 @@
-package co.uk.khaleelfreeman.service
+package uk.co.khaleelfreeman.service
 
 sealed class RefreshState {
     object Complete : RefreshState()

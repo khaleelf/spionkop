@@ -3,9 +3,9 @@ package uk.co.khaleelfreeman.spion.repo
 import io.reactivex.disposables.Disposable
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import co.uk.khaleelfreeman.service.NetworkService
-import co.uk.khaleelfreeman.service.RefreshState
-import co.uk.khaleelfreeman.service.retrofit.dto.Article
+import uk.co.khaleelfreeman.service.NetworkService
+import uk.co.khaleelfreeman.service.RefreshState
+import uk.co.khaleelfreeman.service.retrofit.dto.Article
 import uk.co.khaleelfreeman.spion.util.mediaSources
 
 class ArticleRepository(private val articleNetworkService: NetworkService) :

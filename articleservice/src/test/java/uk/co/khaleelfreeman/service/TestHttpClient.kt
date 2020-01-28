@@ -1,7 +1,7 @@
-package co.uk.khaleelfreeman.service
+package uk.co.khaleelfreeman.service
 
-import co.uk.khaleelfreeman.service.retrofit.Articles
-import co.uk.khaleelfreeman.service.retrofit.RetrofitFactory
+import uk.co.khaleelfreeman.service.retrofit.Articles
+import uk.co.khaleelfreeman.service.retrofit.RetrofitFactory
 import okhttp3.OkHttpClient
 import okhttp3.mock.*
 

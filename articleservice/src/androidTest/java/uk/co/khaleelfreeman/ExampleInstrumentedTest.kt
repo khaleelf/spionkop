@@ -1,4 +1,4 @@
-package co.uk.khaleelfreeman
+package uk.co.khaleelfreeman
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

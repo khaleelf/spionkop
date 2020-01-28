@@ -1,7 +1,7 @@
-package co.uk.khaleelfreeman.service
+package uk.co.khaleelfreeman.service
 
-import co.uk.khaleelfreeman.service.retrofit.dto.Article
-import co.uk.khaleelfreeman.service.retrofit.dto.Visual
+import uk.co.khaleelfreeman.service.retrofit.dto.Article
+import uk.co.khaleelfreeman.service.retrofit.dto.Visual
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 

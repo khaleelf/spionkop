@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import uk.co.khaleelfreeman.spion.R
-import co.uk.khaleelfreeman.service.retrofit.dto.Article
+import uk.co.khaleelfreeman.service.retrofit.dto.Article
 import uk.co.khaleelfreeman.spion.util.formatTimeStamp
 
 class ArticleAdapter(

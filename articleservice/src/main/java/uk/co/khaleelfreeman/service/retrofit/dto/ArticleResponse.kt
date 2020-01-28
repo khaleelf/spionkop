@@ -1,4 +1,4 @@
-package co.uk.khaleelfreeman.service.retrofit.dto
+package uk.co.khaleelfreeman.service.retrofit.dto
 
 import com.google.gson.annotations.SerializedName
 

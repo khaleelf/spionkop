@@ -1,7 +1,7 @@
-package co.uk.khaleelfreeman.service
+package uk.co.khaleelfreeman.service
 
 import android.util.Log
-import co.uk.khaleelfreeman.service.retrofit.dto.ArticleResponse
+import uk.co.khaleelfreeman.service.retrofit.dto.ArticleResponse
 import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.Callback

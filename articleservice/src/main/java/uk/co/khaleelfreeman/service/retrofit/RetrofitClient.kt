@@ -1,7 +1,7 @@
-package co.uk.khaleelfreeman.service.retrofit
+package uk.co.khaleelfreeman.service.retrofit
 
-import co.uk.khaleelfreeman.service.HttpClient
-import co.uk.khaleelfreeman.service.retrofit.dto.ArticleResponse
+import uk.co.khaleelfreeman.service.HttpClient
+import uk.co.khaleelfreeman.service.retrofit.dto.ArticleResponse
 import retrofit2.Call
 import retrofit2.http.GET
 
