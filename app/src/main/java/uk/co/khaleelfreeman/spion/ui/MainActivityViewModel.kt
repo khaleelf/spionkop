@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.spion
+package uk.co.khaleelfreeman.spion.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

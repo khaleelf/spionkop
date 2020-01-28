@@ -1,8 +1,9 @@
-package uk.co.khaleelfreeman.spion
+package uk.co.khaleelfreeman.spion.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_main.*
+import uk.co.khaleelfreeman.spion.R
 
 class AppInfoActivity : AppCompatActivity() {
 

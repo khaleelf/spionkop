@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.spion
+package uk.co.khaleelfreeman.spion.ui
 
 import android.animation.Animator
 import android.animation.AnimatorSet
@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+import uk.co.khaleelfreeman.spion.R
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolderFactory
