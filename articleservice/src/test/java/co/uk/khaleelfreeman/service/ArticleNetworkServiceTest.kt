@@ -1,10 +1,9 @@
-package uk.co.khaleelfreeman.spion.service
+package co.uk.khaleelfreeman.service
 
-import co.uk.khaleelfreeman.service.ArticleNetworkService
-import junit.framework.Assert.assertEquals
-import org.junit.Test
 import co.uk.khaleelfreeman.service.retrofit.dto.Article
 import co.uk.khaleelfreeman.service.retrofit.dto.Visual
+import junit.framework.Assert.assertEquals
+import org.junit.Test
 
 
 class ArticleNetworkServiceTest {

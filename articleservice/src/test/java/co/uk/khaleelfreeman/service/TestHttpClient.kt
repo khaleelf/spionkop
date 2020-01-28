@@ -1,10 +1,9 @@
-package uk.co.khaleelfreeman.spion.service
+package co.uk.khaleelfreeman.service
 
-import co.uk.khaleelfreeman.service.HttpClient
-import okhttp3.OkHttpClient
-import okhttp3.mock.*
 import co.uk.khaleelfreeman.service.retrofit.Articles
 import co.uk.khaleelfreeman.service.retrofit.RetrofitFactory
+import okhttp3.OkHttpClient
+import okhttp3.mock.*
 
 class TestHttpClient : HttpClient {
     private val interceptor = MockInterceptor().apply {
