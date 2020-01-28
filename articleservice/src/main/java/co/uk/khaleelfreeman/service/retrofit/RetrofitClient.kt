@@ -1,11 +1,9 @@
-package uk.co.khaleelfreeman.spion.service.retrofit
+package co.uk.khaleelfreeman.service.retrofit
 
-import co.uk.khaleelfreeman.service.retrofit.Articles
-import co.uk.khaleelfreeman.service.retrofit.RetrofitFactory
-import retrofit2.Call
-import retrofit2.http.GET
 import co.uk.khaleelfreeman.service.HttpClient
 import co.uk.khaleelfreeman.service.retrofit.dto.ArticleResponse
+import retrofit2.Call
+import retrofit2.http.GET
 
 class RetrofitClient : HttpClient {
     private val retrofit = RetrofitFactory.builder().build()

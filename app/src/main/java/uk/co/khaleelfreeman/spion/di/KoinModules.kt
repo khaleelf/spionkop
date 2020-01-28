@@ -3,10 +3,10 @@ package uk.co.khaleelfreeman.spion.di
 import org.koin.dsl.module
 import uk.co.khaleelfreeman.spion.repo.ArticleRepository
 import uk.co.khaleelfreeman.spion.repo.Repository
-import uk.co.khaleelfreeman.spion.service.ArticleNetworkService
-import uk.co.khaleelfreeman.spion.service.HttpClient
-import uk.co.khaleelfreeman.spion.service.NetworkService
-import uk.co.khaleelfreeman.spion.service.retrofit.RetrofitClient
+import co.uk.khaleelfreeman.service.ArticleNetworkService
+import co.uk.khaleelfreeman.service.HttpClient
+import co.uk.khaleelfreeman.service.NetworkService
+import co.uk.khaleelfreeman.service.retrofit.RetrofitClient
 
 val module = module {
     single<Repository> { ArticleRepository(get()) }

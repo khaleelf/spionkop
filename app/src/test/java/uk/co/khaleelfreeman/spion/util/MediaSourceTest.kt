@@ -2,7 +2,7 @@ package uk.co.khaleelfreeman.spion.util
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
+import co.uk.khaleelfreeman.service.retrofit.dto.Article
 
 class MediaSourceTest {
 

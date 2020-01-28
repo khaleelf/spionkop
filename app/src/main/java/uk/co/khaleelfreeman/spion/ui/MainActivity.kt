@@ -22,8 +22,8 @@ import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolderFactory
 import uk.co.khaleelfreeman.spion.repo.Repository
-import uk.co.khaleelfreeman.spion.service.RefreshState
-import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
+import co.uk.khaleelfreeman.service.RefreshState
+import co.uk.khaleelfreeman.service.retrofit.dto.Article
 
 
 class MainActivity : AppCompatActivity() {

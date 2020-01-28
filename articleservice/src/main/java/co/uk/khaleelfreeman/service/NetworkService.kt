@@ -1,13 +1,11 @@
-package uk.co.khaleelfreeman.spion.service
+package co.uk.khaleelfreeman.service
 
 import android.util.Log
-import co.uk.khaleelfreeman.service.HttpClient
-import co.uk.khaleelfreeman.service.NetworkService
+import co.uk.khaleelfreeman.service.retrofit.dto.ArticleResponse
 import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import co.uk.khaleelfreeman.service.retrofit.dto.ArticleResponse
 
 interface NetworkService {
     fun execute() : Single<ArticleResponse>

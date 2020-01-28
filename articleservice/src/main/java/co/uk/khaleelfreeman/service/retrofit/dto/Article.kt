@@ -1,6 +1,5 @@
-package uk.co.khaleelfreeman.spion.service.retrofit.dto
+package co.uk.khaleelfreeman.service.retrofit.dto
 
-import co.uk.khaleelfreeman.service.retrofit.dto.Visual
 import com.google.gson.annotations.SerializedName
 
 data class Article(

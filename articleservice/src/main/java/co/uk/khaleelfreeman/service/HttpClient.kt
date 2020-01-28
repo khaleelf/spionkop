@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.spion.service
+package co.uk.khaleelfreeman.service
 
 import co.uk.khaleelfreeman.service.retrofit.Articles
 

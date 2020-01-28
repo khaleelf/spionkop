@@ -1,6 +1,4 @@
-package uk.co.khaleelfreeman.spion.service
-
-import co.uk.khaleelfreeman.service.RefreshState
+package co.uk.khaleelfreeman.service
 
 sealed class RefreshState {
     object Complete : RefreshState()

@@ -1,7 +1,7 @@
 package uk.co.khaleelfreeman.spion.repo
 
-import uk.co.khaleelfreeman.spion.service.RefreshState
-import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
+import co.uk.khaleelfreeman.service.RefreshState
+import co.uk.khaleelfreeman.service.retrofit.dto.Article
 
 interface Repository {
     fun getArticles(): Array<Article>
