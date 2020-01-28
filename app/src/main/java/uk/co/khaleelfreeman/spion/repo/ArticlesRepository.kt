@@ -3,13 +3,12 @@ package uk.co.khaleelfreeman.spion.repo
 import io.reactivex.disposables.Disposable
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import uk.co.khaleelfreeman.spion.service.ArticleNetworkService
 import uk.co.khaleelfreeman.spion.service.NetworkService
 import uk.co.khaleelfreeman.spion.service.RefreshState
 import uk.co.khaleelfreeman.spion.service.retrofit.dto.Article
 import uk.co.khaleelfreeman.spion.util.mediaSources
 
-class ArticleRepository(private val articleNetworkService: NetworkService = ArticleNetworkService()) :
+class ArticleRepository(private val articleNetworkService: NetworkService) :
     Repository {
     private var _refreshState: RefreshState = RefreshState.Fetching
     private var articles: Array<Article> = emptyArray()
