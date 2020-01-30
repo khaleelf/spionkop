@@ -17,13 +17,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
+import uk.co.khaleelfreeman.service.RefreshState
+import uk.co.khaleelfreeman.service.domain.SpionkopArticle
+import uk.co.khaleelfreeman.service.retrofit.dto.Article
 import uk.co.khaleelfreeman.spion.R
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolderFactory
 import uk.co.khaleelfreeman.spion.repo.Repository
-import uk.co.khaleelfreeman.service.RefreshState
-import uk.co.khaleelfreeman.service.retrofit.dto.Article
 
 
 class MainActivity : AppCompatActivity() {
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
     private val model by lazy { ViewModelProvider(this)[MainActivityViewModel::class.java] }
     private var firstLaunch = true
-    val repo : Repository by inject()
+    private val repo : Repository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         model.fetchArticles()
-        model.articles.observe(this, Observer<Array<Article>> { articles ->
+        model.articles.observe(this, Observer<Array<SpionkopArticle>> { articles ->
                 if (firstLaunch) {
                     fadeOutLoadingAnimation()
                     firstLaunch = false

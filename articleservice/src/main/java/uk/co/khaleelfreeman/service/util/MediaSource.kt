@@ -1,8 +1,8 @@
-package uk.co.khaleelfreeman.spion.util
+package uk.co.khaleelfreeman.service.util
 
-import uk.co.khaleelfreeman.service.retrofit.dto.Article
+import uk.co.khaleelfreeman.service.domain.SpionkopArticle
 
-fun mediaSources(articles: Array<Article>): Set<String> {
+fun mediaSources(articles: List<SpionkopArticle>): Set<String> {
     return articles.map { it.url }.map {
         val indexOfFirstSeparator = it.indexOf('.')
         val subString = it.substring(indexOfFirstSeparator + 1, it.length)

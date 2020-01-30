@@ -5,24 +5,24 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import uk.co.khaleelfreeman.service.NetworkService
 import uk.co.khaleelfreeman.service.RefreshState
-import uk.co.khaleelfreeman.service.retrofit.dto.Article
-import uk.co.khaleelfreeman.spion.util.mediaSources
+import uk.co.khaleelfreeman.service.domain.SpionkopArticle
+import uk.co.khaleelfreeman.service.util.mediaSources
 
 class ArticleRepository(private val articleNetworkService: NetworkService) :
     Repository {
     private var _refreshState: RefreshState = RefreshState.Fetching
-    private var articles: Array<Article> = emptyArray()
+    private var articles: Array<SpionkopArticle> = emptyArray()
     private val thirtyMinInMillis = DateTime(1800000L)
-    private var filteredArticles = emptyArray<Article>()
+    private var filteredArticles = emptyArray<SpionkopArticle>()
     private lateinit var _sources: Set<String>
-    private val articleFilters: MutableMap<String, Array<Article>> = mutableMapOf()
+    private val articleFilters: MutableMap<String, Array<SpionkopArticle>> = mutableMapOf()
     private lateinit var d: Disposable
     var published: Long = 0L
         private set(value) {
             field = value
         }
 
-    override fun getArticles(): Array<Article> {
+    override fun getArticles(): Array<SpionkopArticle> {
         return if (filteredArticles.isEmpty()) {
             articles.clone()
         } else {
@@ -34,11 +34,12 @@ class ArticleRepository(private val articleNetworkService: NetworkService) :
         if (currentTimeMinusPublished().isAfter(thirtyMinInMillis)) {
             _refreshState = RefreshState.Fetching
             d = articleNetworkService.execute().subscribe { response ->
-                published = response.published
-                articles = response.articles
-                _sources = mediaSources(response.articles)
+                val (published, articles) = response
+                this.published = published
+                this.articles = articles.toTypedArray()
+                _sources = mediaSources(articles)
                 //create separate lists from each source
-                generateFilteredArticles(_sources, articles)
+                generateFilteredArticles(_sources, articles.toTypedArray())
                 _refreshState = RefreshState.Complete
                 callback()
             }
@@ -50,10 +51,10 @@ class ArticleRepository(private val articleNetworkService: NetworkService) :
 
     private fun generateFilteredArticles(
         sources: Set<String>,
-        articles: Array<Article>
+        articles: Array<SpionkopArticle>
     ) {
         sources.forEach { source: String ->
-            val filteredArticle: Array<Article> =
+            val filteredArticle: Array<SpionkopArticle> =
                 articles.filter { article -> article.url.contains(source) }.toTypedArray()
             articleFilters[source] = filteredArticle
         }

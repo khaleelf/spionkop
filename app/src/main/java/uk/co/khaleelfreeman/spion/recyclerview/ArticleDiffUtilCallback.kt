@@ -1,9 +1,9 @@
 package uk.co.khaleelfreeman.spion.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
-import uk.co.khaleelfreeman.service.retrofit.dto.Article
+import uk.co.khaleelfreeman.service.domain.SpionkopArticle
 
-class ArticleDiffUtilCallback(private val oldArticles: Array<Article>, private val newArticles: Array<Article>) : DiffUtil.Callback() {
+class ArticleDiffUtilCallback(private val oldArticles: Array<SpionkopArticle>, private val newArticles: Array<SpionkopArticle>) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldArticles.size
 

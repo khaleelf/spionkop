@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.spion.util
+package uk.co.khaleelfreeman.service.util
 
 import java.util.*
 
@@ -7,7 +7,10 @@ import java.util.*
  */
 
 fun formatTimeStamp(timeStamp: Long): String {
-    return compose(::keyDateInfo, ::dateInformation)(Date(timeStamp))
+    return compose(
+        ::keyDateInfo,
+        ::dateInformation
+    )(Date(timeStamp))
 }
 
 private fun keyDateInfo(dateInfo: Iterable<String>): String {

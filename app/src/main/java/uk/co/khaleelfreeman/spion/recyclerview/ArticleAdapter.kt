@@ -6,12 +6,11 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import uk.co.khaleelfreeman.service.domain.SpionkopArticle
 import uk.co.khaleelfreeman.spion.R
-import uk.co.khaleelfreeman.service.retrofit.dto.Article
-import uk.co.khaleelfreeman.spion.util.formatTimeStamp
 
 class ArticleAdapter(
-    var articles: Array<Article>,
+    var articles: Array<SpionkopArticle>,
     private val viewHolderFactory: ViewHolderFactory
 ) :
     RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
@@ -52,15 +51,14 @@ class ArticleAdapter(
         holder: ViewHolder,
         position: Int
     ) {
-        Glide.with(holder.articleView.root).load(articles[position].visual.url).into(holder.articleView.image)
+        Glide.with(holder.articleView.root).load(articles[position].imageUrl).into(holder.articleView.image)
     }
 
     private fun setDate(
-        article: Article,
+        article: SpionkopArticle,
         holder: ViewHolder
     ) {
-        val date = formatTimeStamp(article.timeStamp)
-        holder.articleView.date.text = date
+        holder.articleView.date.text = article.date
     }
 
     private fun setViewClickListenerForCustomTabs(

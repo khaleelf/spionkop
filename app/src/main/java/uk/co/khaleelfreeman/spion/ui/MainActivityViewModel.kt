@@ -3,16 +3,16 @@ package uk.co.khaleelfreeman.spion.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import uk.co.khaleelfreeman.spion.repo.Repository
 import uk.co.khaleelfreeman.service.RefreshState
-import uk.co.khaleelfreeman.service.retrofit.dto.Article
+import uk.co.khaleelfreeman.service.domain.SpionkopArticle
+import uk.co.khaleelfreeman.spion.repo.Repository
 
 
 class MainActivityViewModel : ViewModel() {
     private val _refreshState by lazy { MutableLiveData<RefreshState>() }
     val refreshState: LiveData<RefreshState> = _refreshState
-    private val _articles by lazy { MutableLiveData<Array<Article>>() }
-    val articles: LiveData<Array<Article>> = _articles
+    private val _articles by lazy { MutableLiveData<Array<SpionkopArticle>>() }
+    val articles: LiveData<Array<SpionkopArticle>> = _articles
     private val _sources by lazy { MutableLiveData<Set<String>>() }
     val sources: LiveData<Set<String>> = _sources
     private lateinit var repository: Repository
