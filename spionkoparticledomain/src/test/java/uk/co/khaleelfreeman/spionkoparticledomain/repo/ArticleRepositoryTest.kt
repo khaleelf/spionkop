@@ -1,23 +1,18 @@
-package uk.co.khaleelfreeman.spion.repo
+package uk.co.khaleelfreeman.spionkoparticledomain.repo
 
 import io.reactivex.Single
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import uk.co.khaleelfreeman.spionkoparticledomain.domain.service.NetworkService
-import uk.co.khaleelfreeman.spionkoparticledomain.domain.repo.ArticleRepository
-import uk.co.khaleelfreeman.service.retrofit.dto.Article
-import uk.co.khaleelfreeman.service.retrofit.dto.ArticleResponse
-import uk.co.khaleelfreeman.service.retrofit.dto.Visual
+import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
+import uk.co.khaleelfreeman.spionkoparticledomain.service.NetworkService
 
 class ArticleRepositoryTest {
 
-    private val testNetworkService = TestNetworkService()
-    private val articleRepository =
-        uk.co.khaleelfreeman.spionkoparticledomain.domain.repo.ArticleRepository(
-            testNetworkService
-        )
+    private val testNetworkService  =
+        TestNetworkService()
+    private val articleRepository = ArticleRepository(testNetworkService)
 
     @Before
     fun setup() {
@@ -40,17 +35,17 @@ class ArticleRepositoryTest {
     @Test
     fun `getArticles() should return the articles from the service`() {
         val expected = testNetworkService.articles
-        assertArrayEquals(expected, articleRepository.getArticles())
+        assertArrayEquals(expected.toTypedArray(), articleRepository.getArticles())
     }
 
     @Test
     fun `addFilter() should contain only articles that match the filter`() {
         articleRepository.addFilter("10 10")
         val expected = arrayOf(
-            Article(
+            SpionkopArticle(
                 title = "10",
-                visual = Visual(url = "10"),
-                timeStamp = 10,
+                imageUrl = "10",
+                date = "10",
                 url = "https:://www.10 10.com/liverpool"
             )
         )
@@ -62,16 +57,16 @@ class ArticleRepositoryTest {
         articleRepository.addFilter("10 10")
         articleRepository.addFilter("9 9")
         val expected = arrayOf(
-            Article(
+            SpionkopArticle(
                 title = "10",
-                visual = Visual(url = "10"),
-                timeStamp = 10,
+                imageUrl = "10",
+                date = "10",
                 url = "https:://www.10 10.com/liverpool"
             ),
-            Article(
+            SpionkopArticle(
                 title = "9",
-                visual = Visual(url = "9"),
-                timeStamp = 9,
+                imageUrl = "9",
+                date = "9",
                 url = "https:://www.9 9.com/liverpool"
             )
         )
@@ -84,10 +79,10 @@ class ArticleRepositoryTest {
         articleRepository.addFilter("9 9")
         articleRepository.removeFilter("10 10")
         val expected = arrayOf(
-            Article(
+            SpionkopArticle(
                 title = "9",
-                visual = Visual(url = "9"),
-                timeStamp = 9,
+                imageUrl = "9",
+                date = "9",
                 url = "https:://www.9 9.com/liverpool"
             )
         )
@@ -95,25 +90,25 @@ class ArticleRepositoryTest {
     }
 }
 
-class TestNetworkService :
-    uk.co.khaleelfreeman.spionkoparticledomain.domain.service.NetworkService {
+class TestNetworkService(val published : Long = 1578574582000) : NetworkService {
 
     val articles = generateTestArticles()
-    val published = 1578574582000
 
-    override fun execute(): Single<ArticleResponse> {
-        return Single.create<ArticleResponse> {
-            it.onSuccess(ArticleResponse(published, articles))
+    override fun execute(): Single<Pair<Long, List<SpionkopArticle>>> {
+        return Single.create<Pair<Long, List<SpionkopArticle>>> {
+            it.onSuccess(
+                Pair(published, articles)
+            )
         }
     }
 
-    private fun generateTestArticles(): kotlin.Array<Article> {
-        return (1..10).map { it.toString() }.fold(emptyArray(), { acc, item ->
+    private fun generateTestArticles(): List<SpionkopArticle> {
+        return (1..10).map { it.toString() }.fold(emptyList(), { acc, item ->
             acc.plus(
-                Article(
-                    item,
-                    Visual(item),
-                    item.toLong(),
+                SpionkopArticle(
+                    title = item,
+                    imageUrl = item,
+                    date = item,
                     url = "https:://www.$item $item.com/liverpool"
                 )
             )
