@@ -1,2 +1,2 @@
-include ':app', ':articleservice'
+include ':app', ':articleservice', ':spionkoparticledomain'
 rootProject.name='spion'

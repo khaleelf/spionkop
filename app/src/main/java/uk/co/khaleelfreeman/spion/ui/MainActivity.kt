@@ -17,14 +17,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
-import uk.co.khaleelfreeman.service.RefreshState
-import uk.co.khaleelfreeman.service.domain.SpionkopArticle
-import uk.co.khaleelfreeman.service.retrofit.dto.Article
 import uk.co.khaleelfreeman.spion.R
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolderFactory
-import uk.co.khaleelfreeman.spion.repo.Repository
+import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
+import uk.co.khaleelfreeman.spionkoparticledomain.repo.RefreshState
+import uk.co.khaleelfreeman.spionkoparticledomain.repo.Repository
 
 
 class MainActivity : AppCompatActivity() {

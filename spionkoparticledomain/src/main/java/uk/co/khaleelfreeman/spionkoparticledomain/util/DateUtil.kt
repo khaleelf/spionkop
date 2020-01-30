@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.service.util
+package uk.co.khaleelfreeman.spionkoparticledomain.util
 
 import java.util.*
 

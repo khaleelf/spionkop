@@ -5,14 +5,12 @@ import io.reactivex.Single
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import uk.co.khaleelfreeman.service.domain.SpionkopArticle
 import uk.co.khaleelfreeman.service.retrofit.dto.Article
 import uk.co.khaleelfreeman.service.retrofit.dto.ArticleResponse
-import uk.co.khaleelfreeman.service.util.formatTimeStamp
+import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
+import uk.co.khaleelfreeman.spionkoparticledomain.service.NetworkService
+import uk.co.khaleelfreeman.spionkoparticledomain.util.formatTimeStamp
 
-interface NetworkService {
-    fun execute(): Single<Pair<Long, List<SpionkopArticle>>>
-}
 
 class ArticleNetworkService(private val httpClient: HttpClient) :
     NetworkService {
@@ -43,13 +41,14 @@ class ArticleNetworkService(private val httpClient: HttpClient) :
     }
 }
 
-
-// TODO: Move to separate file.
+// TODO : Move to utils
 private fun articleToSpionkopArticle(article: Article): SpionkopArticle {
     return SpionkopArticle(
         url = article.url,
         imageUrl = article.visual.url,
-        date = formatTimeStamp(article.timeStamp),
+        date = formatTimeStamp(
+            article.timeStamp
+        ),
         title = article.title
     )
 }

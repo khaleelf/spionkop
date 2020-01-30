@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.service.domain
+package uk.co.khaleelfreeman.spionkoparticledomain
 
 data class SpionkopArticle(
     val url: String,

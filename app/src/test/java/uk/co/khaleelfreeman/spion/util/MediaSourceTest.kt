@@ -3,7 +3,7 @@ package uk.co.khaleelfreeman.spion.util
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import uk.co.khaleelfreeman.service.retrofit.dto.Article
-import uk.co.khaleelfreeman.service.util.mediaSources
+import uk.co.khaleelfreeman.spionkoparticledomain.domain.util.mediaSources
 
 class MediaSourceTest {
 
@@ -17,7 +17,9 @@ class MediaSourceTest {
             Article(url = "https://www.liverpoolecho.co.uk/sport/football/football-news/steven-gerrard-what-annoyed-him-17538632")
         )
         val mediaSources =
-            mediaSources(articles)
+            uk.co.khaleelfreeman.spionkoparticledomain.domain.util.mediaSources(
+                articles
+            )
         val expectedSources = setOf("liverpoolecho", "theanfieldwrap", "liverpoolfc", "empireofthekop")
         assertEquals(mediaSources, expectedSources)
     }

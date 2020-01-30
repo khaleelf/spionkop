@@ -4,11 +4,15 @@ import uk.co.khaleelfreeman.service.retrofit.dto.Article
 import uk.co.khaleelfreeman.service.retrofit.dto.Visual
 import junit.framework.Assert.assertEquals
 import org.junit.Test
+import uk.co.khaleelfreeman.spionkoparticledomain.service.ArticleNetworkService
 
 
 class ArticleNetworkServiceTest {
 
-    private val service = ArticleNetworkService(TestHttpClient())
+    private val service =
+        ArticleNetworkService(
+            TestHttpClient()
+        )
 
     @Test
     fun `article service classes should represent json structure correctly`() {

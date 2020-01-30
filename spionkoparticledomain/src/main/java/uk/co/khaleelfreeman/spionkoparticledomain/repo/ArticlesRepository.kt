@@ -1,12 +1,11 @@
-package uk.co.khaleelfreeman.spion.repo
+package uk.co.khaleelfreeman.spionkoparticledomain.repo
 
 import io.reactivex.disposables.Disposable
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
-import uk.co.khaleelfreeman.service.NetworkService
-import uk.co.khaleelfreeman.service.RefreshState
-import uk.co.khaleelfreeman.service.domain.SpionkopArticle
-import uk.co.khaleelfreeman.service.util.mediaSources
+import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
+import uk.co.khaleelfreeman.spionkoparticledomain.service.NetworkService
+import uk.co.khaleelfreeman.spionkoparticledomain.util.mediaSources
 
 class ArticleRepository(private val articleNetworkService: NetworkService) :
     Repository {

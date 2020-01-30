@@ -5,7 +5,8 @@ import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import uk.co.khaleelfreeman.service.NetworkService
+import uk.co.khaleelfreeman.spionkoparticledomain.domain.service.NetworkService
+import uk.co.khaleelfreeman.spionkoparticledomain.domain.repo.ArticleRepository
 import uk.co.khaleelfreeman.service.retrofit.dto.Article
 import uk.co.khaleelfreeman.service.retrofit.dto.ArticleResponse
 import uk.co.khaleelfreeman.service.retrofit.dto.Visual
@@ -13,7 +14,10 @@ import uk.co.khaleelfreeman.service.retrofit.dto.Visual
 class ArticleRepositoryTest {
 
     private val testNetworkService = TestNetworkService()
-    private val articleRepository = ArticleRepository(testNetworkService)
+    private val articleRepository =
+        uk.co.khaleelfreeman.spionkoparticledomain.domain.repo.ArticleRepository(
+            testNetworkService
+        )
 
     @Before
     fun setup() {
@@ -91,7 +95,8 @@ class ArticleRepositoryTest {
     }
 }
 
-class TestNetworkService : NetworkService {
+class TestNetworkService :
+    uk.co.khaleelfreeman.spionkoparticledomain.domain.service.NetworkService {
 
     val articles = generateTestArticles()
     val published = 1578574582000

@@ -1,7 +1,6 @@
-package uk.co.khaleelfreeman.spion.repo
+package uk.co.khaleelfreeman.spionkoparticledomain.repo
 
-import uk.co.khaleelfreeman.service.RefreshState
-import uk.co.khaleelfreeman.service.domain.SpionkopArticle
+import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 
 interface Repository {
     fun getArticles(): Array<SpionkopArticle>

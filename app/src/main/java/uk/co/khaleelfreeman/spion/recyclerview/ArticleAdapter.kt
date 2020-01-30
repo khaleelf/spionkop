@@ -6,8 +6,8 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat.getColor
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import uk.co.khaleelfreeman.service.domain.SpionkopArticle
 import uk.co.khaleelfreeman.spion.R
+import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 
 class ArticleAdapter(
     var articles: Array<SpionkopArticle>,

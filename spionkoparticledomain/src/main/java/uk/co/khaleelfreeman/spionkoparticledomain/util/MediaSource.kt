@@ -1,6 +1,6 @@
-package uk.co.khaleelfreeman.service.util
+package uk.co.khaleelfreeman.spionkoparticledomain.util
 
-import uk.co.khaleelfreeman.service.domain.SpionkopArticle
+import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 
 fun mediaSources(articles: List<SpionkopArticle>): Set<String> {
     return articles.map { it.url }.map {

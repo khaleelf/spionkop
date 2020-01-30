@@ -3,9 +3,9 @@ package uk.co.khaleelfreeman.spion.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import uk.co.khaleelfreeman.service.RefreshState
-import uk.co.khaleelfreeman.service.domain.SpionkopArticle
-import uk.co.khaleelfreeman.spion.repo.Repository
+import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
+import uk.co.khaleelfreeman.spionkoparticledomain.repo.RefreshState
+import uk.co.khaleelfreeman.spionkoparticledomain.repo.Repository
 
 
 class MainActivityViewModel : ViewModel() {
