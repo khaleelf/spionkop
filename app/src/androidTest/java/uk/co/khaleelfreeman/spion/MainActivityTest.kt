@@ -15,7 +15,8 @@ import org.junit.runner.RunWith
 import org.koin.core.context.loadKoinModules
 import org.koin.dsl.module
 import org.koin.test.KoinTest
-import uk.co.khaleelfreeman.spion.service.HttpClient
+import uk.co.khaleelfreeman.service.HttpClient
+import uk.co.khaleelfreeman.spion.ui.MainActivity
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest

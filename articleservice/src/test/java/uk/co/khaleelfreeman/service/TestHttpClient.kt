@@ -1,8 +1,7 @@
-package uk.co.khaleelfreeman.spion
+package uk.co.khaleelfreeman.service
 
 import okhttp3.OkHttpClient
 import okhttp3.mock.*
-import uk.co.khaleelfreeman.service.HttpClient
 import uk.co.khaleelfreeman.service.retrofit.Articles
 import uk.co.khaleelfreeman.service.retrofit.RetrofitFactory
 
@@ -18,5 +17,4 @@ class TestHttpClient : HttpClient {
     private val retrofit = RetrofitFactory.builder().client(client).build()
 
     override val service: Articles = retrofit.create(Articles::class.java)
-
 }

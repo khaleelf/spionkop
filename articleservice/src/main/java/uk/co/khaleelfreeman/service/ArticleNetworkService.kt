@@ -1,0 +1,54 @@
+package uk.co.khaleelfreeman.service
+
+import android.util.Log
+import io.reactivex.Single
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import uk.co.khaleelfreeman.service.retrofit.dto.Article
+import uk.co.khaleelfreeman.service.retrofit.dto.ArticleResponse
+import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
+import uk.co.khaleelfreeman.spionkoparticledomain.service.NetworkService
+import uk.co.khaleelfreeman.spionkoparticledomain.util.formatTimeStamp
+
+
+class ArticleNetworkService(private val httpClient: HttpClient) :
+    NetworkService {
+
+    private val LOG_TAG = this.javaClass.name
+
+    override fun execute(): Single<Pair<Long, List<SpionkopArticle>>> {
+
+        return Single.create<Pair<Long, List<SpionkopArticle>>> { single ->
+            httpClient.service.getArticles().enqueue(object : Callback<ArticleResponse> {
+                override fun onFailure(call: Call<ArticleResponse>, t: Throwable) {
+                    Log.e(LOG_TAG, t.localizedMessage)
+                }
+
+                override fun onResponse(
+                    call: Call<ArticleResponse>,
+                    response: Response<ArticleResponse>
+                ) {
+                    single.onSuccess(
+                        Pair(
+                            response.body()?.published ?: 0L,
+                            response.body()?.articles?.map(::articleToSpionkopArticle) ?: emptyList()
+                        )
+                    )
+                }
+            })
+        }
+    }
+}
+
+// TODO : Move to utils
+private fun articleToSpionkopArticle(article: Article): SpionkopArticle {
+    return SpionkopArticle(
+        url = article.url,
+        imageUrl = article.visual.url,
+        date = formatTimeStamp(
+            article.timeStamp
+        ),
+        title = article.title
+    )
+}
