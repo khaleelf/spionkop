@@ -17,9 +17,9 @@ import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import uk.co.khaleelfreeman.spion.R
-import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
-import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
-import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolderFactory
+import uk.co.khaleelfreeman.spion.ui.recyclerview.ArticleAdapter
+import uk.co.khaleelfreeman.spion.ui.recyclerview.ArticleDiffUtilCallback
+import uk.co.khaleelfreeman.spion.ui.recyclerview.ArticleViewHolderFactory
 import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 import uk.co.khaleelfreeman.spionkoparticledomain.repo.RefreshState
 

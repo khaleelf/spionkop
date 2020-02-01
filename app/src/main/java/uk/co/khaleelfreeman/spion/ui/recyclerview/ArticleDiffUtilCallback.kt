@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.spion.recyclerview
+package uk.co.khaleelfreeman.spion.ui.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
 import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle

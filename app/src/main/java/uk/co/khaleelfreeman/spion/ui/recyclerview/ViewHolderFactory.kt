@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.spion.recyclerview
+package uk.co.khaleelfreeman.spion.ui.recyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,7 +7,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import uk.co.khaleelfreeman.spion.R
-import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter.ViewHolder
+import uk.co.khaleelfreeman.spion.ui.recyclerview.ArticleAdapter.ViewHolder
 
 interface ViewHolderFactory {
     fun getViewHolder(viewType: Int, parent: ViewGroup): ViewHolder

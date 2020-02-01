@@ -3,17 +3,17 @@ package uk.co.khaleelfreeman.spion.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import uk.co.khaleelfreeman.spion.ui.util.LaunchRefreshDelegate
 import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 import uk.co.khaleelfreeman.spionkoparticledomain.repo.RefreshState
 import uk.co.khaleelfreeman.spionkoparticledomain.repo.Repository
-import kotlin.reflect.KProperty
 
 
 class MainActivityViewModel(private val repository: Repository) : ViewModel() {
     private val _refreshState by lazy { MutableLiveData<RefreshState>() }
     private val _articles by lazy { MutableLiveData<Array<SpionkopArticle>>() }
     private val _sources by lazy { MutableLiveData<Set<String>>() }
-    val onFirstLaunch : Boolean by LaunchRefreshDelgate()
+    val onFirstLaunch: Boolean by LaunchRefreshDelegate()
     val refreshState: LiveData<RefreshState> = _refreshState
     val articles: LiveData<Array<SpionkopArticle>> = _articles
     val sources: LiveData<Set<String>> = _sources
@@ -40,18 +40,4 @@ class MainActivityViewModel(private val repository: Repository) : ViewModel() {
     override fun onCleared() {
         repository.teardown()
     }
-}
-
-class LaunchRefreshDelgate {
-    var counter : Int = 0
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): Boolean {
-        return if (counter == 0) {
-            ++counter
-            true
-        } else {
-            false
-        }
-    }
-
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: Int) = Unit
 }

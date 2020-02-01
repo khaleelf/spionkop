@@ -1,4 +1,4 @@
-package uk.co.khaleelfreeman.spion.recyclerview
+package uk.co.khaleelfreeman.spion.ui.recyclerview
 
 import android.net.Uri
 import android.view.ViewGroup
