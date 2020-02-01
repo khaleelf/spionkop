@@ -29,9 +29,7 @@ class MainActivity : AppCompatActivity() {
     private val viewAdapter: ArticleAdapter by lazy {
         ArticleAdapter(emptyArray(), ArticleViewHolderFactory)
     }
-    private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
-    private val model: MainActivityViewModel by viewModel()
-    private var firstLaunch = true
+    private val viewModel: MainActivityViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,29 +39,48 @@ class MainActivity : AppCompatActivity() {
         setupToolbar()
         setupRecyclerView()
         setupSwipeToRefresh()
+
+
+
+        viewModel.fetchArticles()
+        viewModel.articles.observe(this, Observer<Array<SpionkopArticle>> { articles ->
+            if (viewModel.onFirstLaunch) fadeOutLoadingAnimation()
+            val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+            viewAdapter.articles = articles
+            diffResult.dispatchUpdatesTo(viewAdapter)
+        })
+
+        viewModel.sources.observe(this, Observer<Set<String>> { sources ->
+            sources_container.removeAllViews()
+            sources.forEach { source -> setupMediaSource(source) }
+        })
+
+        viewModel.refreshState.observe(this, Observer<RefreshState> { state ->
+            if (state == RefreshState.Complete) {
+                swipe_container.isRefreshing = false
+            }
+        })
+
     }
 
     private fun setupSwipeToRefresh() {
         swipe_container.setOnRefreshListener {
-            model.fetchArticles()
+            viewModel.fetchArticles()
         }
-
-        swipe_container.setColorSchemeResources(
-            android.R.color.holo_blue_bright,
-            android.R.color.holo_green_light,
-            android.R.color.holo_orange_light,
-            android.R.color.holo_red_light
-        )
+        swipe_container.setColorSchemeResources(R.color.secondaryDarkColor)
     }
 
     private fun setupRecyclerView() {
         recycler_view.apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
+            layoutManager = LinearLayoutManager(context)
             adapter = viewAdapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
+        elevateToolbarOnScroll()
+    }
 
+    private fun elevateToolbarOnScroll() {
         recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
@@ -87,47 +104,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        model.fetchArticles()
-        model.articles.observe(this, Observer<Array<SpionkopArticle>> { articles ->
-            if (firstLaunch) {
-                fadeOutLoadingAnimation()
-                firstLaunch = false
-            }
-            val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
-            val diffResult = DiffUtil.calculateDiff(diffCallback)
-            viewAdapter.articles = articles
-            diffResult.dispatchUpdatesTo(viewAdapter)
-        })
-
-        model.sources.observe(this, Observer<Set<String>> { sources ->
-            chip_container.removeAllViews()
-            sources.forEach { source ->
-                val chip = inflateMediaSources(source)
-                chip.setOnClickListener {
-                    if (chip.isChecked) {
-                        model.addFilter(source)
-                    } else {
-                        model.removeFilter(source)
-                    }
-                }
-            }
-        })
-
-        model.refreshState.observe(this, Observer<RefreshState> { state ->
-            if (state == RefreshState.Complete) {
-                swipe_container.isRefreshing = false
-            }
-        })
-        super.onResume()
+    private fun showInfo() {
+        startActivity(Intent(this, AppInfoActivity::class.java))
     }
 
     private fun fadeOutLoadingAnimation() {
         val fadeIn = fade(0f, 1f)
         val fadeOut = fade(1f, 0f)
-
         AnimatorSet().apply {
-            play(fadeOut(loader)).before(fadeIn(recycler_view)).before(fadeIn(chip_container))
+            play(fadeOut(loader)).before(fadeIn(recycler_view)).before(fadeIn(sources_container))
             start()
         }
     }
@@ -140,16 +125,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun inflateMediaSources(source: String): Chip {
+    private fun setupMediaSource(source: String) {
         val chip: Chip =
             LayoutInflater.from(this).inflate(R.layout.media_source_chip, null) as Chip
-        chip_container.addView(chip.apply {
+        sources_container.addView(chip.apply {
             text = "#$source"
         })
-        return chip
+
+        chip.setOnClickListener {
+            filterSource(chip, source)
+        }
     }
 
-    private fun showInfo() {
-        startActivity(Intent(this, AppInfoActivity::class.java))
+    private fun filterSource(chip: Chip, source: String) {
+        if (chip.isChecked) {
+            viewModel.addFilter(source)
+        } else {
+            viewModel.removeFilter(source)
+        }
     }
 }
