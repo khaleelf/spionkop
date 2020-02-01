@@ -8,25 +8,21 @@ import uk.co.khaleelfreeman.spionkoparticledomain.repo.RefreshState
 import uk.co.khaleelfreeman.spionkoparticledomain.repo.Repository
 
 
-class MainActivityViewModel : ViewModel() {
+class MainActivityViewModel(private val repository: Repository) : ViewModel() {
     private val _refreshState by lazy { MutableLiveData<RefreshState>() }
-    val refreshState: LiveData<RefreshState> = _refreshState
     private val _articles by lazy { MutableLiveData<Array<SpionkopArticle>>() }
-    val articles: LiveData<Array<SpionkopArticle>> = _articles
     private val _sources by lazy { MutableLiveData<Set<String>>() }
+    val refreshState: LiveData<RefreshState> = _refreshState
+    val articles: LiveData<Array<SpionkopArticle>> = _articles
     val sources: LiveData<Set<String>> = _sources
-    private lateinit var repository: Repository
 
     fun fetchArticles() {
+        _refreshState.value = RefreshState.Fetching
         repository.fetchArticles {
             _articles.value = repository.getArticles()
             _sources.value = repository.getSources()
-            _refreshState.value = repository.getRefreshState()
+            _refreshState.value = RefreshState.Complete
         }
-    }
-
-    fun setRepository(repository: Repository) {
-        this.repository = repository
     }
 
     fun addFilter(source: String) {

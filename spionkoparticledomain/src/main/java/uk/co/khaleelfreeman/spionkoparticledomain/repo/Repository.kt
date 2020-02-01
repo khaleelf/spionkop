@@ -8,6 +8,5 @@ interface Repository {
     fun addFilter(source: String)
     fun removeFilter(source: String)
     fun getSources() : Set<String>
-    fun getRefreshState(): RefreshState
     fun teardown()
 }

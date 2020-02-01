@@ -9,21 +9,19 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_main.*
-import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 import uk.co.khaleelfreeman.spion.R
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.recyclerview.ArticleViewHolderFactory
 import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 import uk.co.khaleelfreeman.spionkoparticledomain.repo.RefreshState
-import uk.co.khaleelfreeman.spionkoparticledomain.repo.Repository
 
 
 class MainActivity : AppCompatActivity() {
@@ -32,9 +30,8 @@ class MainActivity : AppCompatActivity() {
         ArticleAdapter(emptyArray(), ArticleViewHolderFactory)
     }
     private val viewManager: RecyclerView.LayoutManager by lazy { LinearLayoutManager(this) }
-    private val model by lazy { ViewModelProvider(this)[MainActivityViewModel::class.java] }
+    private val model: MainActivityViewModel by viewModel()
     private var firstLaunch = true
-    private val repo : Repository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         setupToolbar()
         setupRecyclerView()
         setupSwipeToRefresh()
-        model.setRepository(repo)
     }
 
     private fun setupSwipeToRefresh() {
@@ -94,14 +90,14 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         model.fetchArticles()
         model.articles.observe(this, Observer<Array<SpionkopArticle>> { articles ->
-                if (firstLaunch) {
-                    fadeOutLoadingAnimation()
-                    firstLaunch = false
-                }
-                val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
-                val diffResult = DiffUtil.calculateDiff(diffCallback)
-                viewAdapter.articles = articles
-                diffResult.dispatchUpdatesTo(viewAdapter)
+            if (firstLaunch) {
+                fadeOutLoadingAnimation()
+                firstLaunch = false
+            }
+            val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+            viewAdapter.articles = articles
+            diffResult.dispatchUpdatesTo(viewAdapter)
         })
 
         model.sources.observe(this, Observer<Set<String>> { sources ->
@@ -136,8 +132,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun fade(from: Float, to: Float): (view : View) -> Animator {
-        return { v->
+    private fun fade(from: Float, to: Float): (view: View) -> Animator {
+        return { v ->
             ObjectAnimator.ofFloat(v, "alpha", from, to).apply {
                 duration = 1000
             }
