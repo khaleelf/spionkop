@@ -27,7 +27,7 @@ import uk.co.khaleelfreeman.spionkoparticledomain.repo.RefreshState
 class MainActivity : AppCompatActivity() {
 
     private val viewAdapter: ArticleAdapter by lazy {
-        ArticleAdapter(emptyArray(), ArticleViewHolderFactory)
+        ArticleAdapter(emptyList(), ArticleViewHolderFactory)
     }
     private val viewModel: MainActivityViewModel by viewModel()
 
@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        viewModel.fetchArticles()
-        viewModel.articles.observe(this, Observer<Array<SpionkopArticle>> { articles ->
+        viewModel.getViewData()
+        viewModel.articles.observe(this, Observer<List<SpionkopArticle>> { articles ->
             if (viewModel.onFirstLaunch) fadeOutLoadingAnimation()
             val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
             val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupSwipeToRefresh() {
         swipe_container.setOnRefreshListener {
-            viewModel.fetchArticles()
+            viewModel.getViewData()
         }
         swipe_container.setColorSchemeResources(R.color.secondaryDarkColor)
     }

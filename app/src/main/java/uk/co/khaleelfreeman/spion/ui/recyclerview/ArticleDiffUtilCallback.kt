@@ -4,8 +4,8 @@ import androidx.recyclerview.widget.DiffUtil
 import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 
 class ArticleDiffUtilCallback(
-    private val oldArticles: Array<SpionkopArticle>,
-    private val newArticles: Array<SpionkopArticle>
+    private val oldArticles: List<SpionkopArticle>,
+    private val newArticles: List<SpionkopArticle>
 ) : DiffUtil.Callback() {
 
     override fun getOldListSize(): Int = oldArticles.size

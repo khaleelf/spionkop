@@ -1,47 +1,45 @@
 package uk.co.khaleelfreeman.spionkoparticledomain.repo
 
+import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 import uk.co.khaleelfreeman.spionkoparticledomain.service.NetworkService
 import uk.co.khaleelfreeman.spionkoparticledomain.util.mediaSources
 
-class ArticleRepository(private val articleNetworkService: NetworkService) :
-    Repository {
-    private var articles: Array<SpionkopArticle> = emptyArray()
-    private var filteredArticles = emptyArray<SpionkopArticle>()
-    private lateinit var _sources: Set<String>
-    private val articleFilters: MutableMap<String, Array<SpionkopArticle>> = mutableMapOf()
-    private lateinit var d: Disposable
+class ArticleRepository(private val articleNetworkService: NetworkService) : Repository {
+    private var articles: List<SpionkopArticle> = emptyList()
+    private var filteredArticles = emptyList<SpionkopArticle>()
+    private var _sources: Set<String> = emptySet()
+    private val articleFilters: MutableMap<String, List<SpionkopArticle>> = mutableMapOf()
     var published: Long = 0L
         private set
 
-    override fun getArticles(): Array<SpionkopArticle> {
+    override fun getArticles(): List<SpionkopArticle> {
         return if (filteredArticles.isEmpty()) {
-            articles.clone()
+            articles
         } else {
-            filteredArticles.clone()
+            filteredArticles
         }
     }
 
-    override fun fetchArticles(callback: () -> Unit) {
-        d = articleNetworkService.execute().subscribe { response ->
+    override fun fetchArticles(): Single<ViewData> {
+        return articleNetworkService.execute().map { response ->
             val (published, articles) = response
             this.published = published
-            this.articles = articles.toTypedArray()
+            this.articles = articles
             _sources = mediaSources(articles)
             //create separate lists from each source
-            generateFilteredArticles(_sources, articles.toTypedArray())
-            callback()
+            generateFilteredArticles(_sources, articles)
+            ViewData(getArticles(),getSources())
         }
     }
 
     private fun generateFilteredArticles(
         sources: Set<String>,
-        articles: Array<SpionkopArticle>
+        articles: List<SpionkopArticle>
     ) {
         sources.forEach { source: String ->
-            val filteredArticle: Array<SpionkopArticle> =
-                articles.filter { article -> article.url.contains(source) }.toTypedArray()
+            val filteredArticle= articles.filter { article -> article.url.contains(source) }
             articleFilters[source] = filteredArticle
         }
     }
@@ -53,12 +51,9 @@ class ArticleRepository(private val articleNetworkService: NetworkService) :
     override fun removeFilter(source: String) {
         filteredArticles =
             filteredArticles.filterNot { article -> articleFilters[source]!!.any { it == article } }
-                .toTypedArray()
     }
 
     override fun getSources(): Set<String> = _sources
-
-    override fun teardown() {
-        d.dispose()
-    }
 }
+
+data class ViewData (val articles : List<SpionkopArticle>, val sources : Set<String>)

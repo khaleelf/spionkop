@@ -10,7 +10,7 @@ import uk.co.khaleelfreeman.spion.R
 import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 
 class ArticleAdapter(
-    var articles: Array<SpionkopArticle>,
+    var articles: List<SpionkopArticle>,
     private val viewHolderFactory: ViewHolderFactory
 ) :
     RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {

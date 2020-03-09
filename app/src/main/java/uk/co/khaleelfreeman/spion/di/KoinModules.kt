@@ -11,7 +11,7 @@ import uk.co.khaleelfreeman.spionkoparticledomain.repo.Repository
 import uk.co.khaleelfreeman.spionkoparticledomain.service.NetworkService
 
 val module = module {
-    viewModel{ MainActivityViewModel(get()) }
+    viewModel { MainActivityViewModel(get()) }
     single<Repository> { ArticleRepository(get()) }
     single<NetworkService> { ArticleNetworkService(get()) }
     single<HttpClient> { RetrofitClient() }

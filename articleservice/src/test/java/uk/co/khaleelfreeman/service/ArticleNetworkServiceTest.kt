@@ -1,6 +1,6 @@
 package uk.co.khaleelfreeman.service
 
-import junit.framework.Assert.assertEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 import uk.co.khaleelfreeman.spionkoparticledomain.util.formatTimeStamp

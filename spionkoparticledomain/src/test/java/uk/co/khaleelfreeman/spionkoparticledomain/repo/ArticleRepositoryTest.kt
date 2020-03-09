@@ -1,8 +1,8 @@
 package uk.co.khaleelfreeman.spionkoparticledomain.repo
 
 import io.reactivex.Single
-import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertEquals
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
@@ -16,32 +16,31 @@ class ArticleRepositoryTest {
 
     @Before
     fun setup() {
-        articleRepository.fetchArticles { }
+        articleRepository.fetchArticles().blockingGet()
     }
 
     @Test
     fun `getSources() strips out the domain name from the url and returns a unique set`() {
-        val expectedSources = (1..10).toSet()
-            .map { "$it $it" } // a source will look like "1 1" according to how the TestNetworkService is setup.
-        assert(articleRepository.getSources().containsAll(expectedSources))
+        val expectedSources = (1..10).map { "$it $it" }.toSet() // a source will look like "1 1" according to how the TestNetworkService is setup.
+        assertThat(articleRepository.getSources(), `is`(expectedSources))
     }
 
     @Test
     fun `getPublished() returns the published time from the service`() {
         val expected = testNetworkService.published
-        assertEquals(expected, articleRepository.published)
+        assertThat(expected, `is`(articleRepository.published))
     }
 
     @Test
     fun `getArticles() should return the articles from the service`() {
         val expected = testNetworkService.articles
-        assertArrayEquals(expected.toTypedArray(), articleRepository.getArticles())
+        assertThat(expected, `is`(articleRepository.getArticles()))
     }
 
     @Test
     fun `addFilter() should contain only articles that match the filter`() {
         articleRepository.addFilter("10 10")
-        val expected = arrayOf(
+        val expected: List<SpionkopArticle> = listOf(
             SpionkopArticle(
                 title = "10",
                 imageUrl = "10",
@@ -49,14 +48,14 @@ class ArticleRepositoryTest {
                 url = "https:://www.10 10.com/liverpool"
             )
         )
-        assert(articleRepository.getArticles().contentDeepEquals(expected))
+        assertThat(articleRepository.getArticles(), `is`(expected))
     }
 
     @Test
-    fun `addFilter() called with different filters should return article array with multiple articles`() {
+    fun `addFilter() called with different filters should return article list with multiple articles`() {
         articleRepository.addFilter("10 10")
         articleRepository.addFilter("9 9")
-        val expected = arrayOf(
+        val expected = listOf(
             SpionkopArticle(
                 title = "10",
                 imageUrl = "10",
@@ -70,15 +69,15 @@ class ArticleRepositoryTest {
                 url = "https:://www.9 9.com/liverpool"
             )
         )
-        assert(articleRepository.getArticles().contentDeepEquals(expected))
+        assertThat(articleRepository.getArticles(), `is`(expected))
     }
 
     @Test
-    fun `removeFilter() should remove articles from the filterd array`() {
+    fun `removeFilter() should remove articles from the filtered list`() {
         articleRepository.addFilter("10 10")
         articleRepository.addFilter("9 9")
         articleRepository.removeFilter("10 10")
-        val expected = arrayOf(
+        val expected = listOf(
             SpionkopArticle(
                 title = "9",
                 imageUrl = "9",
@@ -86,7 +85,7 @@ class ArticleRepositoryTest {
                 url = "https:://www.9 9.com/liverpool"
             )
         )
-        assert(articleRepository.getArticles().contentDeepEquals(expected))
+        assertThat(articleRepository.getArticles(), `is`(expected))
     }
 }
 
@@ -95,7 +94,7 @@ class TestNetworkService(val published : Long = 1578574582000) : NetworkService 
     val articles = generateTestArticles()
 
     override fun execute(): Single<Pair<Long, List<SpionkopArticle>>> {
-        return Single.create<Pair<Long, List<SpionkopArticle>>> {
+        return Single.create {
             it.onSuccess(
                 Pair(published, articles)
             )
