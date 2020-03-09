@@ -35,15 +35,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         toolbar.inflateMenu(R.menu.menu_item)
-
         setupToolbar()
         setupRecyclerView()
         setupSwipeToRefresh()
-
-
-
         viewModel.getViewData()
-        viewModel.articles.observe(this, Observer<List<SpionkopArticle>> { articles ->
+        setupViewModelObservers()
+    }
+
+    private fun setupViewModelObservers() {
+        viewModel.articles.observe(this, Observer { articles ->
             if (viewModel.onFirstLaunch) fadeOutLoadingAnimation()
             val diffCallback = ArticleDiffUtilCallback(viewAdapter.articles, articles)
             val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -51,17 +51,16 @@ class MainActivity : AppCompatActivity() {
             diffResult.dispatchUpdatesTo(viewAdapter)
         })
 
-        viewModel.sources.observe(this, Observer<Set<String>> { sources ->
+        viewModel.sources.observe(this, Observer { sources ->
             sources_container.removeAllViews()
             sources.forEach { source -> setupMediaSource(source) }
         })
 
-        viewModel.refreshState.observe(this, Observer<RefreshState> { state ->
+        viewModel.refreshState.observe(this, Observer { state ->
             if (state == RefreshState.Complete) {
                 swipe_container.isRefreshing = false
             }
         })
-
     }
 
     private fun setupSwipeToRefresh() {
