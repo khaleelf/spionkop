@@ -20,7 +20,6 @@ import uk.co.khaleelfreeman.spion.R
 import uk.co.khaleelfreeman.spion.ui.recyclerview.ArticleAdapter
 import uk.co.khaleelfreeman.spion.ui.recyclerview.ArticleDiffUtilCallback
 import uk.co.khaleelfreeman.spion.ui.recyclerview.ArticleViewHolderFactory
-import uk.co.khaleelfreeman.spionkoparticledomain.SpionkopArticle
 import uk.co.khaleelfreeman.spionkoparticledomain.repo.RefreshState
 
 

@@ -19,7 +19,7 @@ class ArticleNetworkService(private val httpClient: HttpClient) :
 
     override fun execute(): Single<Pair<Long, List<SpionkopArticle>>> {
 
-        return Single.create<Pair<Long, List<SpionkopArticle>>> { single ->
+        return Single.create { single ->
             httpClient.service.getArticles().enqueue(object : Callback<ArticleResponse> {
                 override fun onFailure(call: Call<ArticleResponse>, t: Throwable) {
                     Log.e(LOG_TAG, t.localizedMessage)
@@ -32,7 +32,8 @@ class ArticleNetworkService(private val httpClient: HttpClient) :
                     single.onSuccess(
                         Pair(
                             response.body()?.published ?: 0L,
-                            response.body()?.articles?.map(::articleToSpionkopArticle) ?: emptyList()
+                            response.body()?.articles?.map(::articleToSpionkopArticle)
+                                ?: emptyList()
                         )
                     )
                 }

@@ -18,5 +18,4 @@ class TestHttpClient : HttpClient {
     private val retrofit = RetrofitFactory.builder().client(client).build()
 
     override val service: Articles = retrofit.create(Articles::class.java)
-
 }
