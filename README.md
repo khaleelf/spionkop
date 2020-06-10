@@ -1,4 +1,4 @@
-# ⚠️ ARCHIVED - for reference only 
+# ⚠️ ARCHIVED - reference only! 🤓
 
 # Spionkop 🔴🔴
 
